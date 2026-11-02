@@ -100,12 +100,14 @@ export default function LookbookModal({ isOpen, onClose, onOpenBooking }: Lookbo
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-stone-700 dark:text-stone-300 font-sans">
               {[
-                "100% Bespoke Hardwood Millwork Fabrication",
-                "Direct Sourcing from Italian & African Quarries",
-                "Dali & Lutron Architectural Smart Lighting",
-                "Dedicated Principal Architect on Every Site",
-                "White-Glove Art Hanging & Scent Installation",
-                "12-Month Structural & Craft Warranty",
+                "100% In-House Solid Hardwood Joinery & Staircase Fabrication",
+                "Precision Multi-Tier Gypsum Drop Ceilings with Cove LED Channels",
+                "Kiln-Dried Solid Mahogany Herringbone Parquet Flooring",
+                "Custom Built-In Kitchen Cabinetry & Bedroom Wardrobe Suites",
+                "Solid Hardwood Double Entrance Doors, Architraves & Jamb Fitting",
+                "Turnkey Villa Roofing Overhaul & Shingle Tile Installation",
+                "Complimentary Laser On-Site Survey Across Nairobi",
+                "12-Month In-House Structural & Craft Guarantee",
               ].map((std, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />

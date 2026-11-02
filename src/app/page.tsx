@@ -119,8 +119,8 @@ export default function HomePage() {
             <div className="relative rounded-3xl overflow-hidden border border-stone-200 dark:border-stone-800/80 bg-white dark:bg-stone-900/40 p-3 shadow-xl dark:shadow-2xl group">
               <div className="relative h-[440px] w-full rounded-2xl overflow-hidden bg-stone-100 dark:bg-stone-950">
                 <img
-                  src="/portfolio/project-19.jpg"
-                  alt="AURA & NOIR Floating Hardwood Staircase"
+                  src="/portfolio/project-07.jpg"
+                  alt="AURA & NOIR Handcrafted Hardwood Staircase"
                   className="w-full h-full object-cover transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
@@ -136,12 +136,12 @@ export default function HomePage() {
                       Master Craft 01
                     </span>
                     <h3 className="font-serif text-xl text-white font-medium">
-                      Floating Hardwood Staircases
+                      Solid Hardwood Staircases
                     </h3>
                   </div>
 
                   <button
-                    onClick={() => setSelectedProject(PROJECTS[18])}
+                    onClick={() => setSelectedProject(PROJECTS.find((p) => p.id === "proj-07") || PROJECTS[0])}
                     className="p-3 rounded-full bg-amber-400 text-stone-950 hover:scale-110 transition shadow-lg"
                     title="Inspect Project"
                   >
