@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowUp, MapPin, Mail, Phone, Globe, Sparkles } from "lucide-react";
+import AtelierLogo from "@/components/AtelierLogo";
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -15,14 +16,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16 border-b border-stone-800/80">
           {/* Brand Dossier */}
           <div className="lg:col-span-5 space-y-5">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full border border-amber-500/40 bg-stone-900 flex items-center justify-center">
-                <span className="font-serif text-base text-amber-300 font-semibold">A</span>
-              </div>
-              <span className="font-serif text-xl tracking-[0.2em] font-medium text-stone-100 uppercase">
+            <Link href="/" className="flex items-center gap-3 group">
+              <AtelierLogo size="md" showText={false} />
+              <span className="font-serif text-xl tracking-[0.2em] font-medium text-stone-100 uppercase group-hover:text-amber-300 transition-colors">
                 AURA & NOIR
               </span>
-            </div>
+            </Link>
 
             <p className="text-xs text-stone-400 leading-relaxed font-sans max-w-sm">
               An architectural interior design atelier devoted to quiet luxury, organic geometry, and tailored sensory comfort. Crafting timeless sanctuaries across East Africa and beyond.

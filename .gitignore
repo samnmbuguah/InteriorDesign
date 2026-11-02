@@ -1,6 +1,12 @@
 node_modules/
 .next/
 *.zip
+*.tar.gz
 .DS_Store
 *.log
 deploy.tar.gz
+.archives/
+archives/
+.env*.local
+.env
+
