@@ -71,12 +71,12 @@ export default function Footer() {
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href="/services" className="hover:text-amber-300 transition">
-                  Our 7 Specialized Services
+                  7 Core Services
                 </Link>
               </li>
               <li>
                 <Link href="/portfolio" className="hover:text-amber-300 transition">
-                  Portfolio (54 Works & Reels)
+                  Portfolio (54 Works)
                 </Link>
               </li>
               <li>
@@ -86,7 +86,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/estimator" className="hover:text-amber-300 transition">
-                  Interactive Cost Estimator
+                  Cost Estimator
                 </Link>
               </li>
             </ul>
@@ -121,7 +121,9 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span>atelier@interiordesign.akilinova.co.ke</span>
+                <a href="mailto:quotes@interiordesign.akilinova.co.ke" className="hover:text-amber-300 transition">
+                  quotes@interiordesign.akilinova.co.ke
+                </a>
               </div>
             </div>
           </div>

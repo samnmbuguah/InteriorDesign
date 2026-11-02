@@ -24,7 +24,7 @@ export default function ProjectComparator({
   return (
     <>
       {/* Floating Bottom Comparison Dock */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 backdrop-blur-xl bg-stone-950/90 border border-amber-500/40 rounded-full px-5 py-2.5 shadow-2xl flex items-center gap-4 animate-in slide-in-from-bottom-5 duration-300">
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 backdrop-blur-xl bg-stone-950/95 border border-amber-500/40 rounded-full px-4 sm:px-5 py-2.5 shadow-2xl flex items-center gap-3 sm:gap-4 max-w-[95vw] animate-in slide-in-from-bottom-5 duration-300">
         <div className="flex items-center gap-2">
           <ArrowLeftRight className="w-4 h-4 text-amber-400" />
           <span className="text-xs font-serif text-stone-200">

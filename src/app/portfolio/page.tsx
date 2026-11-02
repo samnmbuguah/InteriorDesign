@@ -30,7 +30,7 @@ export default function PortfolioPage() {
       <CustomCursor />
       <Navbar />
 
-      <div className="pt-24">
+      <div className="pt-28 md:pt-32">
         {/* Complete 54-Project Gallery + 4 On-site Video Reels */}
         <ProjectGallery
           projects={PROJECTS}
