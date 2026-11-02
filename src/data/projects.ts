@@ -1591,7 +1591,17 @@ export const STATS = [
   { value: "100%", label: "Turnkey Delivery" },
 ];
 
-export const TESTIMONIALS = [
+export interface Testimonial {
+  id: string;
+  rating: number;
+  quote: string;
+  author: string;
+  role: string;
+  location: string;
+  service: string;
+}
+
+export const TESTIMONIALS: Testimonial[] = [
   {
     id: "test-01",
     rating: 5,

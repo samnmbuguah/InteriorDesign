@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { MAIN_SERVICES, ServiceItem } from "@/data/projects";
 import {
   Wrench,
@@ -136,14 +137,20 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
               </div>
             </div>
 
-            {/* CTA */}
+            {/* CTA Buttons */}
             <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <Link
+                href={`/services/${currentService.id}`}
+                className="px-6 py-3.5 rounded-full bg-stone-900 text-white dark:bg-amber-400 dark:text-stone-950 font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-105 transition shadow-lg"
+              >
+                <span>Explore Dedicated {currentService.title} Page</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
               <button
                 onClick={() => onSelectService(currentService.title)}
-                className="px-6 py-3.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 text-stone-950 font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 hover:brightness-105 transition"
+                className="px-5 py-3.5 rounded-full border border-stone-300 dark:border-stone-700 hover:border-amber-500 text-stone-800 dark:text-stone-200 text-xs uppercase tracking-wider font-semibold transition"
               >
-                <span>Request Quotation for {currentService.title}</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Request Quotation</span>
               </button>
             </div>
           </div>
@@ -155,14 +162,13 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
         {MAIN_SERVICES.map((s) => (
           <div
             key={s.id}
-            onClick={() => setActiveTab(s.id)}
-            className={`p-6 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between group ${
+            className={`p-6 rounded-2xl border transition-all flex flex-col justify-between group ${
               activeTab === s.id
                 ? "bg-stone-900 text-white dark:bg-stone-900/90 dark:border-amber-400/80 shadow-lg"
                 : "bg-white dark:bg-[#0C0D10] border-stone-200 dark:border-stone-800 hover:border-amber-400/40 text-stone-900 dark:text-stone-100 shadow-sm"
             }`}
           >
-            <div>
+            <div onClick={() => setActiveTab(s.id)} className="cursor-pointer">
               <div className="flex items-center justify-between mb-4">
                 <span className="font-mono text-sm text-amber-500 font-semibold">
                   {s.number}
@@ -170,6 +176,13 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
                 <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400">
                   {s.typicalTimeline}
                 </span>
+              </div>
+              <div className="relative h-32 rounded-xl overflow-hidden mb-3 bg-stone-100 dark:bg-stone-900">
+                <img
+                  src={s.image}
+                  alt={s.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               </div>
               <h4 className="font-serif text-lg font-medium mb-1.5 group-hover:text-amber-500 transition-colors">
                 {s.title}
@@ -179,9 +192,20 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
               </p>
             </div>
 
-            <div className="mt-5 pt-3 border-t border-stone-100 dark:border-stone-800/80 flex items-center justify-between text-xs text-amber-600 dark:text-amber-400 font-medium">
-              <span>View Specifications</span>
-              <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+            <div className="mt-5 pt-3 border-t border-stone-100 dark:border-stone-800/80 flex items-center justify-between">
+              <button
+                onClick={() => setActiveTab(s.id)}
+                className="text-xs text-stone-500 hover:text-amber-500 transition font-mono uppercase tracking-wider"
+              >
+                Quick Preview
+              </button>
+              <Link
+                href={`/services/${s.id}`}
+                className="text-xs text-amber-600 dark:text-amber-400 font-semibold flex items-center gap-1 hover:underline"
+              >
+                <span>Dedicated Page</span>
+                <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
         ))}
