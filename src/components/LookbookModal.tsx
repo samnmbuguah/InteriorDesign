@@ -37,7 +37,7 @@ export default function LookbookModal({ isOpen, onClose, onOpenBooking }: Lookbo
             AURA & NOIR · The Architectural Lookbook
           </h2>
           <p className="text-xs text-stone-400 max-w-lg mx-auto font-sans leading-relaxed">
-            An editorial compendium of 37 realized residential sanctuaries, material provenance, and spatial architectural standards across Nairobi and East Africa.
+            An editorial compendium of 54 realized residential sanctuaries, material provenance, and spatial architectural standards across Nairobi and East Africa.
           </p>
 
           <div className="pt-2 flex justify-center gap-3">

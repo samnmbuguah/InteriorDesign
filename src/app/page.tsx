@@ -99,7 +99,27 @@ export default function HomePage() {
                 href="#portfolio"
                 className="px-8 py-4 rounded-full bg-white dark:bg-stone-900/80 border border-stone-300 dark:border-stone-700/80 hover:border-amber-500 text-stone-800 dark:text-stone-200 text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition shadow-sm"
               >
-                <span>View 37 Client Works</span>
+                <span>View 54 Client Works & Reels</span>
+              </a>
+            </div>
+
+            {/* Direct Line Badge */}
+            <div className="pt-2 flex flex-wrap items-center gap-3 text-xs font-sans text-stone-600 dark:text-stone-400">
+              <span className="flex items-center gap-1.5 font-medium text-stone-800 dark:text-stone-200">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                Direct Atelier Workshop:
+              </span>
+              <a href="tel:+254728541775" className="font-semibold text-amber-700 dark:text-amber-400 hover:underline">
+                0728 541 775
+              </a>
+              <span className="text-stone-300 dark:text-stone-700">|</span>
+              <a
+                href="https://wa.me/254728541775?text=Hello%20AURA%20%26%20NOIR%2C%20I%20would%20like%20to%20inquire%20about%20your%20services."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
+              >
+                WhatsApp Us
               </a>
             </div>
 
@@ -208,7 +228,7 @@ export default function HomePage() {
               href="#portfolio"
               className="text-xs uppercase tracking-widest text-stone-500 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-300 transition flex items-center gap-1"
             >
-              <span>View All 37 Works</span>
+              <span>View All 54 Works & Reels</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -249,7 +269,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Complete Filterable Portfolio Gallery (37 Client Works) */}
+      {/* Complete Filterable Portfolio Gallery (54 Client Works & Reels) */}
       <ProjectGallery
         projects={PROJECTS}
         onSelectProject={(p) => setSelectedProject(p)}

@@ -71,7 +71,7 @@ export default function Footer() {
             <ul className="space-y-2 text-xs">
               <li>
                 <a href="#portfolio" className="hover:text-amber-300 transition">
-                  Portfolio (37 Works)
+                  Portfolio (54 Works & Reels)
                 </a>
               </li>
               <li>
@@ -109,7 +109,20 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span>+254 (0) 700 892 411</span>
+                <a href="tel:+254728541775" className="hover:text-amber-300 transition">
+                  0728 541 775 <span className="text-stone-500">(+254 728 541 775)</span>
+                </a>
+              </div>
+              <div className="pt-1">
+                <a
+                  href="https://wa.me/254728541775?text=Hello%20AURA%20%26%20NOIR%2C%20I%20would%20like%20to%20inquire%20about%20your%20services."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-[11px] text-emerald-300 hover:bg-emerald-900/90 transition"
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>WhatsApp: 0728 541 775</span>
+                </a>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-amber-400 shrink-0" />

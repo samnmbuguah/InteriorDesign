@@ -46,7 +46,7 @@ const jsonLd = {
   "image": "https://interiordesign.akilinova.co.ke/portfolio/project-31.jpg",
   "@id": "https://interiordesign.akilinova.co.ke",
   "url": "https://interiordesign.akilinova.co.ke",
-  "telephone": "+254700892411",
+  "telephone": "+254728541775",
   "priceRange": "$$$$",
   "address": {
     "@type": "PostalAddress",

@@ -117,7 +117,7 @@ export default function ConsultationModal({
     const text = encodeURIComponent(
       `Hello AURA & NOIR, I would like to request a quotation for ${formData.projectType} in ${formData.location}. (Ref: ${reservationId}).`
     );
-    window.open(`https://wa.me/254700892411?text=${text}`, "_blank");
+    window.open(`https://wa.me/254728541775?text=${text}`, "_blank");
   };
 
   return (
@@ -343,6 +343,29 @@ export default function ConsultationModal({
                     </>
                   )}
                 </button>
+              </div>
+
+              <div className="pt-3 text-center border-t border-stone-200 dark:border-stone-800">
+                <p className="text-xs text-stone-500 dark:text-stone-400">
+                  Prefer direct assistance? Call or WhatsApp our workshop manager directly at:
+                </p>
+                <div className="mt-1 flex items-center justify-center gap-3">
+                  <a
+                    href="tel:+254728541775"
+                    className="text-xs font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+                  >
+                    📞 0728 541 775
+                  </a>
+                  <span className="text-stone-400">·</span>
+                  <a
+                    href="https://wa.me/254728541775?text=Hello%20AURA%20%26%20NOIR%2C%20I%20would%20like%20to%20inquire%20about%20your%20services."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline"
+                  >
+                    💬 WhatsApp Us
+                  </a>
+                </div>
               </div>
             </form>
           </div>

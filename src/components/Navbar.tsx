@@ -15,6 +15,7 @@ import {
   Sun,
   Moon,
   Wrench,
+  Phone,
 } from "lucide-react";
 
 interface NavbarProps {
@@ -97,7 +98,7 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
               href="#portfolio"
               className="hover:text-amber-600 dark:hover:text-amber-300 transition-colors py-1"
             >
-              Portfolio (37)
+              Portfolio (54)
             </a>
             <a
               href="#3d-lab"
@@ -164,6 +165,16 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
               )}
             </button>
 
+            {/* Direct Call Workshop Line */}
+            <a
+              href="tel:+254728541775"
+              className="hidden xl:flex items-center gap-1.5 px-3 py-2 rounded-full border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900/80 text-stone-700 dark:text-stone-300 text-xs font-medium hover:text-amber-600 dark:hover:text-amber-300 transition shadow-sm"
+              title="Direct Workshop Line: 0728 541 775"
+            >
+              <Phone className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>0728 541 775</span>
+            </a>
+
             {/* Consultation CTA */}
             <button
               onClick={onOpenBooking}
@@ -202,7 +213,7 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
               onClick={() => setMobileMenuOpen(false)}
               className="hover:text-amber-600 dark:hover:text-amber-300 transition border-b border-stone-200 dark:border-stone-800 pb-2.5 flex items-center justify-between"
             >
-              <span>Portfolio (37 Client Works)</span>
+              <span>Portfolio (54 Client Works & Reels)</span>
               <ArrowUpRight className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             </a>
             <a
@@ -267,6 +278,14 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
             </div>
 
             <div className="pt-2 flex flex-col gap-3 font-sans">
+              <a
+                href="tel:+254728541775"
+                className="w-full py-3 rounded-full border border-stone-300 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 font-semibold uppercase tracking-widest text-xs flex items-center justify-center gap-2 shadow"
+              >
+                <Phone className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <span>Call Workshop: 0728 541 775</span>
+              </a>
+
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
