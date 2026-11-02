@@ -3,23 +3,24 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://interiordesign.akilinova.co.ke"),
-  title: "AURA & NOIR | Bespoke Architectural Interior Design & Studio",
+  title: "AURA & NOIR | Master Joinery, Gypsum & Home Renovation Atelier",
   description:
-    "Award-winning interior architecture and turnkey interior design studio crafting timeless, sculptural residential and commercial sanctuaries in Nairobi and across East Africa.",
+    "Specialists in wooden staircases, gypsum ceiling design & installation, wooden flooring, custom kitchen cabinets & wardrobes, TV media walls, door & frame fitting, and roofing & full home renovations in Nairobi.",
   keywords: [
-    "interior design Nairobi",
-    "luxury interior design Kenya",
-    "architectural interiors",
-    "bespoke furniture",
-    "residential renovation",
-    "AURA & NOIR",
-    "turnkey interior studio",
+    "wooden staircase Kenya",
+    "gypsum designing and installation Nairobi",
+    "wooden flooring Kenya",
+    "kitchen cabinets and wardrobes Nairobi",
+    "custom TV stands Kenya",
+    "door and frame fitting Nairobi",
+    "roofing and home renovation Kenya",
+    "AURA & NOIR Atelier",
   ],
   authors: [{ name: "AURA & NOIR Atelier" }],
   openGraph: {
-    title: "AURA & NOIR | Bespoke Architectural Interior Design",
+    title: "AURA & NOIR | Master Joinery, Gypsum & Home Renovation",
     description:
-      "Sculpting Light, Space & Materiality. Explore over 37 curated residential and commercial transformations.",
+      "Specialists in wooden staircases, gypsum ceiling designs, hardwood flooring, kitchen cabinets, TV stands, door fitting, and turnkey renovations.",
     url: "https://interiordesign.akilinova.co.ke",
     siteName: "AURA & NOIR Atelier",
     images: [
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
         url: "/portfolio/project-31.jpg",
         width: 1200,
         height: 800,
-        alt: "AURA & NOIR Interior Architecture",
+        alt: "AURA & NOIR Craftsmanship",
       },
     ],
     locale: "en_US",
@@ -73,14 +74,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="scroll-smooth">
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Inline Theme Initializer (Defaults to light mode) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (localStorage.theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (_) {}
+            `,
+          }}
+        />
       </head>
-      <body className="min-h-screen bg-[#090A0B] text-[#F4EFE6] antialiased selection:bg-[#D4AF37] selection:text-black">
+      <body className="min-h-screen bg-[#FAF8F5] text-[#18191B] dark:bg-[#090A0B] dark:text-[#F4EFE6] antialiased selection:bg-[#D4AF37] selection:text-black transition-colors duration-300">
         {children}
       </body>
     </html>
