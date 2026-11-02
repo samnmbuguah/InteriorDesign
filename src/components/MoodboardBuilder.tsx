@@ -5,7 +5,7 @@ import { PROJECTS, Project } from "@/data/projects";
 import { Sparkles, Palette, Layers, Check, ArrowRight, RotateCcw, Heart } from "lucide-react";
 
 interface MoodboardProps {
-  onAttachMoodboard: (summary: string) => void;
+  onAttachMoodboard?: (summary: string) => void;
 }
 
 const MATERIAL_SWATCHES = [
@@ -70,7 +70,7 @@ export default function MoodboardBuilder({ onAttachMoodboard }: MoodboardProps) 
       .map((id) => MATERIAL_SWATCHES.find((m) => m.id === id)?.name)
       .join(", ");
     const summary = `Custom Moodboard: ${spaceType} · Finishes: [${matNames}] · Accent Tone: ${selectedColor} · Pinned Inspo: [${pinnedProjects.join(", ")}]`;
-    onAttachMoodboard(summary);
+    if (onAttachMoodboard) onAttachMoodboard(summary);
   };
 
   const pinnedProjectObjects = PROJECTS.filter((p) => pinnedProjects.includes(p.id));

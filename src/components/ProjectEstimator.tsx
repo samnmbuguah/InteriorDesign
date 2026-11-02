@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import { Calculator, Clock, CheckCircle2, ArrowRight, ShieldCheck } from "lucide-react";
 
 interface EstimatorProps {
-  onBookWithEstimate: (details: string) => void;
+  onBookWithEstimate?: (details: string) => void;
 }
 
 type Currency = "USD" | "KES" | "GBP" | "EUR";
@@ -91,7 +91,7 @@ export default function ProjectEstimator({ onBookWithEstimate }: EstimatorProps)
     const summary = `${calculation.spaceLabel} (${sqFt.toLocaleString()} sq ft) · ${
       calculation.tierName
     } · Est: ${calculation.symbol}${calculation.minVal.toLocaleString()} - ${calculation.symbol}${calculation.maxVal.toLocaleString()} (${calculation.weeks} weeks)`;
-    onBookWithEstimate(summary);
+    if (onBookWithEstimate) onBookWithEstimate(summary);
   };
 
   return (

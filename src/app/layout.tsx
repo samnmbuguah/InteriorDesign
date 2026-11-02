@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/context/ThemeContext";
+import { BookingProvider } from "@/context/BookingContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -96,7 +98,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-[#FAF8F5] text-[#18191B] dark:bg-[#090A0B] dark:text-[#F4EFE6] antialiased selection:bg-[#D4AF37] selection:text-black transition-colors duration-300">
-        {children}
+        <ThemeProvider>
+          <BookingProvider>{children}</BookingProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

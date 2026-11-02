@@ -70,29 +70,24 @@ export default function Footer() {
             </span>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#portfolio" className="hover:text-amber-300 transition">
+                <Link href="/services" className="hover:text-amber-300 transition">
+                  Our 7 Specialized Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/portfolio" className="hover:text-amber-300 transition">
                   Portfolio (54 Works & Reels)
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#3d-lab" className="hover:text-amber-300 transition flex items-center gap-1">
+                <Link href="/3d-lab" className="hover:text-amber-300 transition flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-amber-400" /> 3D Spatial Lab
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#philosophy" className="hover:text-amber-300 transition">
-                  Our Philosophy
-                </a>
-              </li>
-              <li>
-                <a href="#estimator" className="hover:text-amber-300 transition">
-                  Cost Estimator
-                </a>
-              </li>
-              <li>
-                <a href="#materials" className="hover:text-amber-300 transition">
-                  Finishes Library
-                </a>
+                <Link href="/estimator" className="hover:text-amber-300 transition">
+                  Interactive Cost Estimator
+                </Link>
               </li>
             </ul>
           </div>

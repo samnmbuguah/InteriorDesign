@@ -23,7 +23,7 @@ interface ProjectLightboxProps {
   projects: Project[];
   onClose: () => void;
   onSelectProject: (p: Project) => void;
-  onBookProject: (projectName: string) => void;
+  onBookProject?: (projectName: string) => void;
 }
 
 export default function ProjectLightbox({
@@ -338,7 +338,7 @@ export default function ProjectLightbox({
             <button
               onClick={() => {
                 onClose();
-                onBookProject(project.title);
+                if (onBookProject) onBookProject(project.title);
               }}
               className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 text-stone-950 font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 hover:brightness-105 transition"
             >
