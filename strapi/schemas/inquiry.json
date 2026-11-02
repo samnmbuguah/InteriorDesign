@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "inquiries",
+  "info": {
+    "singularName": "inquiry",
+    "pluralName": "inquiries",
+    "displayName": "Client Consultation Inquiry",
+    "description": "Incoming architectural project quote and survey requests"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "reservationId": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "location": {
+      "type": "string"
+    },
+    "projectType": {
+      "type": "string"
+    },
+    "budget": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "text"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["New Inquiry", "Survey Scheduled", "Quotation Sent", "Approved", "Declined"],
+      "default": "New Inquiry"
+    },
+    "submittedAt": {
+      "type": "datetime"
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
+import { submitStrapiInquiry } from "@/lib/strapi";
 
 export async function POST(request: Request) {
   try {
@@ -50,7 +51,21 @@ export async function POST(request: Request) {
       console.warn("[AURA & NOIR] Notice: could not write local leads file:", fsErr);
     }
 
-    // 2. Dispatch email notification via system sendmail to quotes@interiordesign.akilinova.co.ke
+    // 2. Dispatch to Strapi CMS (asynchronously with non-blocking error handling)
+    try {
+      submitStrapiInquiry({
+        name,
+        email,
+        phone,
+        location,
+        projectType,
+        budget,
+        notes,
+        reservationId,
+      }).catch((e) => console.warn("[AURA & NOIR] Strapi inquiry dispatch notice:", e));
+    } catch (_) {}
+
+    // 3. Dispatch email notification via system sendmail to quotes@interiordesign.akilinova.co.ke
     try {
       const recipient = "quotes@interiordesign.akilinova.co.ke";
       const subject = `[New Quote Request] ${projectType || "Interior Design"} - ${name} (${reservationId})`;

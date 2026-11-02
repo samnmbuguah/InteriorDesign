@@ -1,0 +1,88 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Portfolio Project",
+    "description": "Completed and on-site architectural joinery, gypsum, and renovation works"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "projectId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "number": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["staircases", "gypsum", "flooring", "cabinetry", "tv_stands", "doors", "renovation"],
+      "required": true
+    },
+    "categoryLabel": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "year": {
+      "type": "string"
+    },
+    "area": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "completionTime": {
+      "type": "string"
+    },
+    "craftStage": {
+      "type": "enumeration",
+      "enum": ["Completed Work", "On-Site Installation", "Workshop Milling"]
+    },
+    "aspectRatio": {
+      "type": "enumeration",
+      "enum": ["landscape", "portrait", "square", "panoramic"],
+      "default": "landscape"
+    },
+    "description": {
+      "type": "text"
+    },
+    "highlights": {
+      "type": "json"
+    },
+    "materials": {
+      "type": "json"
+    },
+    "palette": {
+      "type": "json"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "image": {
+      "type": "string"
+    },
+    "mediaAsset": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images", "videos"]
+    }
+  }
+}

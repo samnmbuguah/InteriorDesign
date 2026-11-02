@@ -1,0 +1,29 @@
+services:
+  strapi:
+    image: strapi/strapi:v5-alpine
+    container_name: interiordesign-strapi
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: sqlite
+      DATABASE_FILENAME: .tmp/data.db
+      JWT_SECRET: ${JWT_SECRET:-aura_noir_jwt_secret_dev_key_very_secure}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET:-aura_noir_admin_jwt_secret_key}
+      APP_KEYS: ${APP_KEYS:-keyA,keyB,keyC,keyD}
+      API_TOKEN_SALT: ${API_TOKEN_SALT:-aura_noir_api_token_salt}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT:-aura_noir_transfer_token_salt}
+      NODE_ENV: development
+    volumes:
+      - ./config:/opt/app/config
+      - ./src:/opt/app/src
+      - ./package.json:/opt/app/package.json
+      - ./data:/opt/app/.tmp
+      - ./public/uploads:/opt/app/public/uploads
+    ports:
+      - "1337:1337"
+    networks:
+      - strapi-net
+
+networks:
+  strapi-net:
+    driver: bridge
