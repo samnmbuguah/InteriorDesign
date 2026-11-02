@@ -7,8 +7,20 @@ import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import ServicesSection from "@/components/ServicesSection";
 import { useBooking } from "@/context/BookingContext";
-import { Wrench, Phone, MessageSquare, ArrowRight, ShieldCheck, Clock, Award, Hammer } from "lucide-react";
-import { CONTACT_INFO } from "@/data/projects";
+import {
+  Wrench,
+  Phone,
+  MessageSquare,
+  ArrowRight,
+  ShieldCheck,
+  Clock,
+  Award,
+  Hammer,
+  Sparkles,
+  ArrowUpRight,
+  CheckCircle2,
+} from "lucide-react";
+import { CONTACT_INFO, MAIN_SERVICES } from "@/data/projects";
 
 export default function ServicesPage() {
   const { openBooking } = useBooking();
@@ -18,42 +30,142 @@ export default function ServicesPage() {
       <CustomCursor />
       <Navbar />
 
-      {/* Services Header */}
-      <section className="pt-32 pb-12 px-6 md:px-12 max-w-7xl mx-auto border-b border-stone-200 dark:border-stone-800/80">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold mb-3">
-              <Wrench className="w-4 h-4" />
-              Specialized Disciplines & Joinery Atelier
+      {/* 1. CINEMATIC HERO SECTION WITH RICH IMAGERY COLLAGE */}
+      <section className="relative pt-32 pb-16 px-6 md:px-12 max-w-7xl mx-auto border-b border-stone-200 dark:border-stone-800/80 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          {/* Left Column: Heading & CTAs */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs tracking-widest uppercase font-semibold">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Specialized Joinery & Finishing Disciplines</span>
             </div>
-            <h1 className="font-serif text-4xl sm:text-6xl text-stone-900 dark:text-stone-100 font-normal leading-tight">
-              Our 7 Core Master Crafts
+
+            <h1 className="font-serif text-4xl sm:text-6xl text-stone-900 dark:text-stone-100 font-normal leading-[1.1]">
+              7 In-House Disciplines,{" "}
+              <span className="italic font-light text-amber-700 dark:text-amber-300">
+                Endless Masterpieces
+              </span>
             </h1>
-            <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400 mt-3 font-sans leading-relaxed">
-              From cantilevered floating wooden staircases and precision gypsum acoustic drop ceilings, to bespoke culinary cabinetry, hardwood parquet flooring, and complete turnkey home renovations in Nairobi.
+
+            <p className="text-sm sm:text-base text-stone-600 dark:text-stone-300 font-sans leading-relaxed max-w-xl font-light">
+              Each discipline operates with dedicated master carpenters, precision CNC routers, and flawless hand finishing. Explore our dedicated dossiers with real installations across Karen, Runda, Muthaiga, and Kitisuru.
             </p>
+
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <button
+                onClick={() => openBooking("General Consultation for 7 Core Services")}
+                className="px-7 py-3.5 rounded-full bg-stone-900 text-white dark:bg-amber-400 dark:text-stone-950 text-xs font-semibold uppercase tracking-widest hover:brightness-105 transition shadow-lg flex items-center gap-2"
+              >
+                <span>Request Custom Quotation</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <a
+                href={CONTACT_INFO.telLink}
+                className="px-5 py-3.5 rounded-full border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:border-amber-500 transition shadow-sm font-mono"
+              >
+                <Phone className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span>Call: {CONTACT_INFO.phoneDisplay}</span>
+              </a>
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <a
-              href={CONTACT_INFO.telLink}
-              className="px-5 py-3 rounded-full border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:border-amber-500 transition shadow-sm"
-            >
-              <Phone className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-              <span>Call: {CONTACT_INFO.phoneDisplay}</span>
-            </a>
-            <button
-              onClick={() => openBooking("General Consultation for 7 Core Services")}
-              className="px-6 py-3 rounded-full bg-stone-900 text-white dark:bg-amber-400 dark:text-stone-950 text-xs font-semibold uppercase tracking-widest hover:brightness-105 transition shadow-lg flex items-center gap-2"
-            >
-              <span>Request Custom Quotation</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+          {/* Right Column: Enticing Multi-Image Showcase Grid */}
+          <div className="lg:col-span-6 relative">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 p-2 sm:p-3 rounded-3xl bg-white dark:bg-stone-900/40 border border-stone-200 dark:border-stone-800 shadow-xl">
+              {/* Feature Tile 1: Staircases */}
+              <Link
+                href="/services/staircases"
+                className="group relative h-48 sm:h-52 rounded-2xl overflow-hidden bg-stone-950"
+              >
+                <img
+                  src="/portfolio/project-07.jpg"
+                  alt="Wooden Staircases"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
+                <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded backdrop-blur-md bg-stone-950/70 text-[9px] font-mono text-amber-300">
+                  01 Staircases
+                </span>
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white">
+                  <span className="text-xs font-serif font-medium truncate">
+                    Hardwood Staircases
+                  </span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-amber-400 group-hover:scale-125 transition-transform" />
+                </div>
+              </Link>
+
+              {/* Feature Tile 2: Gypsum */}
+              <Link
+                href="/services/gypsum"
+                className="group relative h-48 sm:h-52 rounded-2xl overflow-hidden bg-stone-950"
+              >
+                <img
+                  src="/portfolio/project-29.jpg"
+                  alt="Gypsum Ceilings"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
+                <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded backdrop-blur-md bg-stone-950/70 text-[9px] font-mono text-amber-300">
+                  02 Gypsum
+                </span>
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white">
+                  <span className="text-xs font-serif font-medium truncate">
+                    Ceilings & Coves
+                  </span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-amber-400 group-hover:scale-125 transition-transform" />
+                </div>
+              </Link>
+
+              {/* Feature Tile 3: Cabinetry */}
+              <Link
+                href="/services/cabinetry"
+                className="group relative h-48 sm:h-52 rounded-2xl overflow-hidden bg-stone-950"
+              >
+                <img
+                  src="/portfolio/project-27.jpg"
+                  alt="Kitchens & Wardrobes"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
+                <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded backdrop-blur-md bg-stone-950/70 text-[9px] font-mono text-amber-300">
+                  04 Cabinetry
+                </span>
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white">
+                  <span className="text-xs font-serif font-medium truncate">
+                    Kitchens & Wardrobes
+                  </span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-amber-400 group-hover:scale-125 transition-transform" />
+                </div>
+              </Link>
+
+              {/* Feature Tile 4: Roofing & Renovation */}
+              <Link
+                href="/services/renovation"
+                className="group relative h-48 sm:h-52 rounded-2xl overflow-hidden bg-stone-950"
+              >
+                <img
+                  src="/portfolio/project-54.jpg"
+                  alt="Roofing & Renovation"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
+                <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded backdrop-blur-md bg-stone-950/70 text-[9px] font-mono text-amber-300">
+                  07 Renovation
+                </span>
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white">
+                  <span className="text-xs font-serif font-medium truncate">
+                    Roofing & Makeovers
+                  </span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-amber-400 group-hover:scale-125 transition-transform" />
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* Value Pillars */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 pt-8 border-t border-stone-200 dark:border-stone-800">
+        {/* 4 Value Pillars */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 pt-8 border-t border-stone-200 dark:border-stone-800">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4" />
@@ -93,10 +205,10 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Interactive 7 Services Component */}
+      {/* 2. INTERACTIVE 7 SERVICES SECTION WITH DEDICATED LINKS */}
       <ServicesSection onSelectService={(serviceTitle) => openBooking(`Quotation for ${serviceTitle}`)} />
 
-      {/* Workshop Direct Contact Banner */}
+      {/* 3. WORKSHOP DIRECT BANNER */}
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="max-w-xl">
