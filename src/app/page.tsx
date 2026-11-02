@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import Navbar from "@/components/Navbar";
+import CustomCursor from "@/components/CustomCursor";
 import ThreeRoomViewer from "@/components/ThreeRoomViewer";
 import ProjectGallery from "@/components/ProjectGallery";
 import ProjectLightbox from "@/components/ProjectLightbox";
+import ProjectComparator from "@/components/ProjectComparator";
+import MoodboardBuilder from "@/components/MoodboardBuilder";
+import LookbookModal from "@/components/LookbookModal";
 import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 import ProjectEstimator from "@/components/ProjectEstimator";
 import MaterialLibrary from "@/components/MaterialLibrary";
@@ -17,18 +20,18 @@ import {
   ArrowRight,
   ArrowUpRight,
   Compass,
-  Layers,
   Award,
-  Eye,
   CheckCircle2,
   Quote,
   Star,
-  Maximize2,
+  BookOpen,
 } from "lucide-react";
 
 export default function HomePage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [pinnedProjects, setPinnedProjects] = useState<Project[]>([]);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isLookbookOpen, setIsLookbookOpen] = useState(false);
   const [prefilledScope, setPrefilledScope] = useState("");
 
   const handleOpenBooking = (scope = "") => {
@@ -36,16 +39,31 @@ export default function HomePage() {
     setIsBookingOpen(true);
   };
 
+  const handleTogglePin = (p: Project) => {
+    if (pinnedProjects.some((item) => item.id === p.id)) {
+      setPinnedProjects(pinnedProjects.filter((item) => item.id !== p.id));
+    } else {
+      if (pinnedProjects.length < 3) {
+        setPinnedProjects([...pinnedProjects, p]);
+      }
+    }
+  };
+
   const featuredProjects = PROJECTS.filter((p) => p.featured).slice(0, 4);
 
   return (
     <main className="min-h-screen bg-[#090A0B] text-[#F4EFE6] selection:bg-[#D4AF37] selection:text-black">
-      {/* Sticky Luxury Navbar */}
-      <Navbar onOpenBooking={() => handleOpenBooking()} />
+      {/* Luxury Custom Magnetic Cursor */}
+      <CustomCursor />
+
+      {/* Sticky Luxury Navbar with Ambient Soundscape */}
+      <Navbar
+        onOpenBooking={() => handleOpenBooking()}
+        onOpenLookbook={() => setIsLookbookOpen(true)}
+      />
 
       {/* Hero Section */}
       <section className="relative pt-36 pb-20 md:pt-44 md:pb-28 px-6 md:px-12 max-w-7xl mx-auto overflow-hidden">
-        {/* Subtle Ambient Radial Glow */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-amber-500/10 blur-[130px] pointer-events-none rounded-full" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -109,7 +127,6 @@ export default function HomePage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
 
-                {/* Floating Architectural Badge */}
                 <div className="absolute top-4 left-4 backdrop-blur-md bg-stone-950/70 border border-white/10 rounded-full px-3 py-1.5 text-[10px] uppercase tracking-wider text-amber-300 font-medium flex items-center gap-1.5">
                   <Award className="w-3.5 h-3.5 text-amber-400" />
                   Karen Villa Grand Salon · 2026
@@ -139,7 +156,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Interactive 3D Spatial Lab Section */}
+      {/* Interactive 3D Spatial Lab Section (Multi-Room + Guided Tour) */}
       <section id="3d-lab" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
           <div>
@@ -151,17 +168,16 @@ export default function HomePage() {
               The 3D Spatial Room Visualizer
             </h2>
             <p className="text-sm text-stone-400 mt-2 max-w-xl font-sans">
-              Interact with our virtual architectural salon in real-time 3D. Orbit 360°, inspect custom millwork joinery hotspots, customize material finishes, and simulate natural sun paths from dawn to twilight.
+              Switch between the **Living Salon**, **Master Suite**, and **Kitchen Island Bar**. Experience 360° orbit exploration, 30-second guided cinematic tours, real-time sun angle shifts, and tactile material swaps.
             </p>
           </div>
 
           <div className="hidden md:flex items-center gap-2 text-xs text-stone-400 font-sans">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>WebGL 60 FPS Engine · Full 360° Freedom</span>
+            <span>WebGL 60 FPS Engine · 3 Rooms · Cinematic Tour</span>
           </div>
         </div>
 
-        {/* 3D Canvas Component */}
         <ThreeRoomViewer />
       </section>
 
@@ -173,19 +189,29 @@ export default function HomePage() {
               Curator’s Selection
             </span>
           </div>
-          <a
-            href="#portfolio"
-            className="text-xs uppercase tracking-widest text-stone-400 hover:text-amber-300 transition flex items-center gap-1"
-          >
-            <span>View All 37 Works</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </a>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setIsLookbookOpen(true)}
+              className="text-xs uppercase tracking-widest text-amber-300 hover:text-amber-200 transition flex items-center gap-1.5"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Download Monograph (PDF)</span>
+            </button>
+            <a
+              href="#portfolio"
+              className="text-xs uppercase tracking-widest text-stone-400 hover:text-amber-300 transition flex items-center gap-1"
+            >
+              <span>View All 37 Works</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProjects.map((p) => (
             <div
               key={p.id}
+              data-cursor="explore"
               onClick={() => setSelectedProject(p)}
               className="group cursor-pointer rounded-2xl overflow-hidden border border-stone-800/80 bg-[#0C0D10] hover:border-amber-400/50 transition-all duration-300"
             >
@@ -216,14 +242,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Complete Filterable Portfolio Gallery (All 37 Client Works) */}
+      {/* Complete Filterable Portfolio Gallery (All 37 Works + Compare Pinning) */}
       <ProjectGallery
         projects={PROJECTS}
         onSelectProject={(p) => setSelectedProject(p)}
+        pinnedIds={pinnedProjects.map((p) => p.id)}
+        onTogglePin={handleTogglePin}
       />
 
       {/* Before & After Interactive Slider */}
       <BeforeAfterSlider />
+
+      {/* Interactive Virtual Moodboard Builder ("Curate Your Haven") */}
+      <MoodboardBuilder
+        onAttachMoodboard={(summary) => handleOpenBooking(summary)}
+      />
 
       {/* Our 4-Pillar Architectural Philosophy */}
       <section id="philosophy" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
@@ -295,7 +328,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Interactive Project Estimator */}
+      {/* Interactive Multi-Currency Project Estimator */}
       <ProjectEstimator
         onBookWithEstimate={(scope) => handleOpenBooking(scope)}
       />
@@ -349,7 +382,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Dramatic Full-Bleed Call to Action Banner */}
+      {/* Call to Action Banner */}
       <section className="py-20 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="relative rounded-3xl overflow-hidden border border-amber-500/30 bg-gradient-to-r from-stone-900 via-[#111216] to-stone-900 p-8 md:p-16 text-center shadow-2xl">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none" />
@@ -374,27 +407,40 @@ export default function HomePage() {
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <a
-                href="https://wa.me/254700000000?text=Hello%20AURA%20%26%20NOIR%2C%20I%20would%20like%20to%20inquire%20about%20a%20project."
-                target="_blank"
-                rel="noreferrer"
+              <button
+                onClick={() => setIsLookbookOpen(true)}
                 className="w-full sm:w-auto px-8 py-4 rounded-full bg-stone-900 border border-stone-700 text-stone-200 font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:border-amber-400/50 transition"
               >
-                <span>Direct WhatsApp Inquiry</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
+                <BookOpen className="w-4 h-4 text-amber-400" />
+                <span>View 2026 Lookbook (PDF)</span>
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal with 2D CAD Blueprint Layout */}
       <ProjectLightbox
         project={selectedProject}
         projects={PROJECTS}
         onClose={() => setSelectedProject(null)}
         onSelectProject={(p) => setSelectedProject(p)}
         onBookProject={(title) => handleOpenBooking(`Inquiry on ${title}`)}
+      />
+
+      {/* Side-by-Side Project Comparator Dock & Modal */}
+      <ProjectComparator
+        pinnedProjects={pinnedProjects}
+        onRemoveProject={(id) => setPinnedProjects(pinnedProjects.filter((p) => p.id !== id))}
+        onClearAll={() => setPinnedProjects([])}
+        onBookProject={(title) => handleOpenBooking(`Comparison inquiry on ${title}`)}
+      />
+
+      {/* 2026 Atelier Monograph Lookbook Modal */}
+      <LookbookModal
+        isOpen={isLookbookOpen}
+        onClose={() => setIsLookbookOpen(false)}
+        onOpenBooking={() => handleOpenBooking("2026 Monograph Package Inquiry")}
       />
 
       {/* Consultation Booking Modal */}

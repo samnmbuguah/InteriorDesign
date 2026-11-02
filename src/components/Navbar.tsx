@@ -2,15 +2,27 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, ArrowUpRight, Compass, Sparkles, PhoneCall } from "lucide-react";
+import { soundscape } from "@/utils/soundscape";
+import {
+  Menu,
+  X,
+  ArrowUpRight,
+  Sparkles,
+  Volume2,
+  VolumeX,
+  BookOpen,
+  Palette,
+} from "lucide-react";
 
 interface NavbarProps {
   onOpenBooking: () => void;
+  onOpenLookbook: () => void;
 }
 
-export default function Navbar({ onOpenBooking }: NavbarProps) {
+export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAudioActive, setIsAudioActive] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +31,11 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleAudioToggle = () => {
+    const nextState = soundscape.toggle();
+    setIsAudioActive(nextState);
+  };
 
   return (
     <>
@@ -48,7 +65,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8 text-[13px] tracking-widest uppercase font-medium text-stone-300">
+          <nav className="hidden lg:flex items-center gap-7 text-[12px] tracking-widest uppercase font-medium text-stone-300">
             <a
               href="#portfolio"
               className="hover:text-amber-300 transition-colors py-1 relative hover:after:w-full after:w-0 after:h-[1px] after:bg-amber-400 after:absolute after:bottom-0 after:left-0 after:transition-all"
@@ -63,10 +80,11 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
               3D Spatial Lab
             </a>
             <a
-              href="#philosophy"
-              className="hover:text-amber-300 transition-colors py-1 relative hover:after:w-full after:w-0 after:h-[1px] after:bg-amber-400 after:absolute after:bottom-0 after:left-0 after:transition-all"
+              href="#moodboard"
+              className="hover:text-amber-300 transition-colors py-1 flex items-center gap-1 hover:after:w-full after:w-0 after:h-[1px] after:bg-amber-400 after:absolute after:bottom-0 after:left-0 after:transition-all"
             >
-              Philosophy
+              <Palette className="w-3.5 h-3.5 text-stone-400" />
+              Moodboard
             </a>
             <a
               href="#estimator"
@@ -80,16 +98,42 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
             >
               Materiality
             </a>
-            <a
-              href="#testimonials"
-              className="hover:text-amber-300 transition-colors py-1 relative hover:after:w-full after:w-0 after:h-[1px] after:bg-amber-400 after:absolute after:bottom-0 after:left-0 after:transition-all"
+            <button
+              onClick={onOpenLookbook}
+              className="hover:text-amber-300 transition-colors py-1 flex items-center gap-1 text-stone-300"
             >
-              Praise
-            </a>
+              <BookOpen className="w-3.5 h-3.5 text-amber-400/80" />
+              Lookbook
+            </button>
           </nav>
 
-          {/* Consultation CTA */}
-          <div className="hidden sm:flex items-center gap-4">
+          {/* Right Controls: Ambient Audio Toggle & Consultation CTA */}
+          <div className="hidden sm:flex items-center gap-3">
+            {/* Ambient Soundscape Button */}
+            <button
+              onClick={handleAudioToggle}
+              title={isAudioActive ? "Mute Studio Ambient Audio" : "Play Studio Ambient Atmosphere"}
+              className={`p-2.5 rounded-full border backdrop-blur-md transition-all flex items-center gap-2 ${
+                isAudioActive
+                  ? "bg-amber-400/15 border-amber-400 text-amber-300 shadow-md shadow-amber-500/20"
+                  : "bg-stone-900/80 border-stone-800 text-stone-400 hover:text-stone-200 hover:border-stone-700"
+              }`}
+            >
+              {isAudioActive ? (
+                <>
+                  <Volume2 className="w-4 h-4 text-amber-400 animate-pulse" />
+                  <span className="flex items-end gap-0.5 h-3">
+                    <span className="w-0.5 bg-amber-400 h-2 animate-bounce" />
+                    <span className="w-0.5 bg-amber-400 h-3 animate-bounce [animation-delay:0.15s]" />
+                    <span className="w-0.5 bg-amber-400 h-1.5 animate-bounce [animation-delay:0.3s]" />
+                  </span>
+                </>
+              ) : (
+                <VolumeX className="w-4 h-4" />
+              )}
+            </button>
+
+            {/* Consultation CTA */}
             <button
               onClick={onOpenBooking}
               className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500/20 via-amber-400/20 to-amber-600/20 hover:from-amber-500 hover:to-amber-400 border border-amber-500/40 text-stone-100 hover:text-stone-950 text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-lg shadow-amber-950/30"
@@ -113,61 +157,82 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-[#090A0B]/95 backdrop-blur-2xl flex flex-col justify-center px-8 lg:hidden animate-in fade-in duration-200">
-          <div className="flex flex-col gap-6 text-xl font-serif text-stone-200 tracking-wider">
+          <div className="flex flex-col gap-5 text-lg font-serif text-stone-200 tracking-wider">
             <a
               href="#portfolio"
               onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-amber-300 transition border-b border-stone-800 pb-3 flex items-center justify-between"
+              className="hover:text-amber-300 transition border-b border-stone-800 pb-2.5 flex items-center justify-between"
             >
               <span>Portfolio (37 Client Works)</span>
-              <ArrowUpRight className="w-5 h-5 text-amber-400" />
+              <ArrowUpRight className="w-4 h-4 text-amber-400" />
             </a>
             <a
               href="#3d-lab"
               onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-amber-300 transition border-b border-stone-800 pb-3 flex items-center justify-between text-amber-300"
+              className="hover:text-amber-300 transition border-b border-stone-800 pb-2.5 flex items-center justify-between text-amber-300"
             >
               <span className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4" /> 3D Spatial Room Lab
               </span>
-              <ArrowUpRight className="w-5 h-5" />
+              <ArrowUpRight className="w-4 h-4" />
             </a>
             <a
-              href="#philosophy"
+              href="#moodboard"
               onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-amber-300 transition border-b border-stone-800 pb-3"
+              className="hover:text-amber-300 transition border-b border-stone-800 pb-2.5 flex items-center justify-between"
             >
-              Our Design Philosophy
+              <span>Virtual Moodboard Builder</span>
+              <Palette className="w-4 h-4 text-amber-400" />
             </a>
             <a
               href="#estimator"
               onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-amber-300 transition border-b border-stone-800 pb-3"
+              className="hover:text-amber-300 transition border-b border-stone-800 pb-2.5"
             >
               Interactive Cost Estimator
             </a>
             <a
               href="#materials"
               onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-amber-300 transition border-b border-stone-800 pb-3"
+              className="hover:text-amber-300 transition border-b border-stone-800 pb-2.5"
             >
               Materiality & Finishes
             </a>
-            <a
-              href="#testimonials"
-              onClick={() => setMobileMenuOpen(false)}
-              className="hover:text-amber-300 transition border-b border-stone-800 pb-3"
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenLookbook();
+              }}
+              className="text-left hover:text-amber-300 transition border-b border-stone-800 pb-2.5 flex items-center justify-between text-stone-300"
             >
-              Client Stories & Press
-            </a>
+              <span>2026 Atelier Lookbook (PDF)</span>
+              <BookOpen className="w-4 h-4 text-amber-400" />
+            </button>
 
-            <div className="pt-4 flex flex-col gap-3 font-sans">
+            {/* Ambient Sound Toggle in Mobile */}
+            <div className="py-2 flex items-center justify-between">
+              <span className="text-xs uppercase tracking-wider text-stone-400 font-sans">
+                Studio Ambient Atmosphere
+              </span>
+              <button
+                onClick={handleAudioToggle}
+                className={`p-2 rounded-full border ${
+                  isAudioActive
+                    ? "bg-amber-400 text-stone-950 border-amber-300 font-semibold"
+                    : "bg-stone-900 border-stone-700 text-stone-300"
+                }`}
+              >
+                {isAudioActive ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+              </button>
+            </div>
+
+            <div className="pt-2 flex flex-col gap-3 font-sans">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenBooking();
                 }}
-                className="w-full py-4 rounded-full bg-amber-400 text-stone-950 font-semibold uppercase tracking-widest text-xs flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20"
+                className="w-full py-3.5 rounded-full bg-amber-400 text-stone-950 font-semibold uppercase tracking-widest text-xs flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20"
               >
                 <span>Book Bespoke Consultation</span>
                 <ArrowUpRight className="w-4 h-4" />

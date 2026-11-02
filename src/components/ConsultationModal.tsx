@@ -5,7 +5,6 @@ import confetti from "canvas-confetti";
 import {
   X,
   Sparkles,
-  Calendar,
   MapPin,
   Mail,
   User,
@@ -13,7 +12,6 @@ import {
   CheckCircle2,
   Send,
   MessageSquare,
-  ArrowRight,
 } from "lucide-react";
 
 interface ConsultationModalProps {
@@ -34,10 +32,10 @@ export default function ConsultationModal({
     location: "Karen, Nairobi",
     projectType: "Full Residence Architecture",
     budget: "$50,000 – $100,000",
-    date: "",
     notes: "",
   });
 
+  const [reservationId, setReservationId] = useState<string>("AN-2026-7842");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -62,25 +60,38 @@ export default function ConsultationModal({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate submission delay and trigger confetti
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/consultation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (data.reservationId) {
+        setReservationId(data.reservationId);
+      }
+    } catch {
+      // Fallback ID if network fails
+      setReservationId(`AN-2026-${Math.floor(1000 + Math.random() * 9000)}`);
+    } finally {
       setIsSubmitting(false);
       setSubmitted(true);
       try {
         confetti({
-          particleCount: 80,
-          spread: 70,
+          particleCount: 90,
+          spread: 75,
           origin: { y: 0.6 },
           colors: ["#D4AF37", "#FFFFFF", "#C5A880", "#222428"],
         });
-      } catch (err) {
-        // ignore if confetti fails
+      } catch {
+        // ignore
       }
-    }, 600);
+    }
   };
 
   const handleReset = () => {
@@ -90,15 +101,14 @@ export default function ConsultationModal({
 
   const openWhatsApp = () => {
     const text = encodeURIComponent(
-      `Hello AURA & NOIR Atelier, I would like to schedule a design consultation for my property in ${formData.location}. Scope: ${formData.projectType}.`
+      `Hello AURA & NOIR Atelier, I have submitted consultation dossier ${reservationId} for my property in ${formData.location}. Scope: ${formData.projectType}.`
     );
-    window.open(`https://wa.me/254700000000?text=${text}`, "_blank");
+    window.open(`https://wa.me/254700892411?text=${text}`, "_blank");
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-2xl p-4 md:p-6 animate-in fade-in duration-200">
       <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-3xl border border-stone-800 bg-[#0C0D10] shadow-2xl p-6 md:p-10">
-        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-6 right-6 p-2 rounded-full bg-stone-900 border border-stone-800 text-stone-400 hover:text-white hover:border-stone-700 transition"
@@ -107,7 +117,6 @@ export default function ConsultationModal({
         </button>
 
         {submitted ? (
-          /* Confirmation State */
           <div className="py-8 text-center space-y-6 animate-in zoom-in-95 duration-300">
             <div className="w-16 h-16 rounded-full bg-amber-400/10 border-2 border-amber-400 text-amber-300 flex items-center justify-center mx-auto shadow-xl shadow-amber-500/20">
               <CheckCircle2 className="w-8 h-8" />
@@ -115,7 +124,7 @@ export default function ConsultationModal({
 
             <div>
               <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold block mb-1">
-                Consultation Request Received
+                Consultation Dossier Confirmed
               </span>
               <h3 className="font-serif text-3xl text-stone-100">
                 Welcome to AURA & NOIR, {formData.name || "Valued Client"}
@@ -128,7 +137,7 @@ export default function ConsultationModal({
             <div className="p-4 rounded-2xl bg-stone-900/70 border border-stone-800 max-w-md mx-auto text-left text-xs space-y-1.5 text-stone-300">
               <div className="flex justify-between">
                 <span className="text-stone-400">Reference:</span>
-                <span className="font-mono text-amber-300">AN-2026-{(Math.random() * 9000 + 1000).toFixed(0)}</span>
+                <span className="font-mono text-amber-300">{reservationId}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-stone-400">Project Type:</span>
@@ -157,7 +166,6 @@ export default function ConsultationModal({
             </div>
           </div>
         ) : (
-          /* Booking Form */
           <div>
             <div className="mb-8">
               <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-amber-400 font-semibold mb-1">
@@ -174,7 +182,6 @@ export default function ConsultationModal({
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Full Name */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-1.5">
                     Your Full Name *
@@ -192,7 +199,6 @@ export default function ConsultationModal({
                   </div>
                 </div>
 
-                {/* Email Address */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-1.5">
                     Email Address *
@@ -212,7 +218,6 @@ export default function ConsultationModal({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Phone / WhatsApp */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-1.5">
                     Phone / WhatsApp *
@@ -230,7 +235,6 @@ export default function ConsultationModal({
                   </div>
                 </div>
 
-                {/* Property Location */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-1.5">
                     Property Location
@@ -257,7 +261,6 @@ export default function ConsultationModal({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Project Scope */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-1.5">
                     Project Scope
@@ -277,7 +280,6 @@ export default function ConsultationModal({
                   </select>
                 </div>
 
-                {/* Investment Budget */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-1.5">
                     Estimated Investment Budget
@@ -295,7 +297,6 @@ export default function ConsultationModal({
                 </div>
               </div>
 
-              {/* Notes / Scope */}
               <div>
                 <label className="block text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-1.5">
                   Project Notes or Architectural Wishes
@@ -309,7 +310,6 @@ export default function ConsultationModal({
                 />
               </div>
 
-              {/* Submit CTA */}
               <div className="pt-2">
                 <button
                   type="submit"

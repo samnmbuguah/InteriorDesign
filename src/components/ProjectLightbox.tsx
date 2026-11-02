@@ -1,22 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import { Project } from "@/data/projects";
 import {
   X,
   ChevronLeft,
   ChevronRight,
   MapPin,
-  Calendar,
   Maximize2,
   Minimize2,
   Clock,
-  Sparkles,
   Layers,
   ArrowRight,
   Check,
   Copy,
+  Compass,
+  Image as ImageIcon,
 } from "lucide-react";
 
 interface ProjectLightboxProps {
@@ -35,6 +34,7 @@ export default function ProjectLightbox({
   onBookProject,
 }: ProjectLightboxProps) {
   const [isZoomed, setIsZoomed] = useState(false);
+  const [viewMode, setViewMode] = useState<"photo" | "blueprint">("photo");
   const [copiedHex, setCopiedHex] = useState<string | null>(null);
 
   useEffect(() => {
@@ -84,7 +84,33 @@ export default function ProjectLightbox({
           </span>
         </div>
 
+        {/* View Mode Switcher (Photo vs Blueprint CAD) */}
         <div className="flex items-center gap-2">
+          <div className="flex p-1 rounded-full bg-stone-900 border border-stone-700">
+            <button
+              onClick={() => setViewMode("photo")}
+              className={`px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-medium flex items-center gap-1.5 transition ${
+                viewMode === "photo"
+                  ? "bg-amber-400 text-stone-950 font-semibold shadow"
+                  : "text-stone-400 hover:text-white"
+              }`}
+            >
+              <ImageIcon className="w-3 h-3" />
+              <span>Photograph</span>
+            </button>
+            <button
+              onClick={() => setViewMode("blueprint")}
+              className={`px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-medium flex items-center gap-1.5 transition ${
+                viewMode === "blueprint"
+                  ? "bg-amber-400 text-stone-950 font-semibold shadow"
+                  : "text-stone-400 hover:text-white"
+              }`}
+            >
+              <Compass className="w-3 h-3" />
+              <span>2D Blueprint</span>
+            </button>
+          </div>
+
           <button
             onClick={() => setIsZoomed(!isZoomed)}
             title={isZoomed ? "Original View" : "Zoom View"}
@@ -102,22 +128,75 @@ export default function ProjectLightbox({
         </div>
       </div>
 
-      {/* Main Lightbox Body (Split Screen on Desktop) */}
+      {/* Main Lightbox Body */}
       <div className="relative w-full max-w-6xl max-h-[92vh] overflow-hidden rounded-3xl border border-stone-800 bg-[#0C0D10] shadow-2xl flex flex-col lg:flex-row mt-12 md:mt-0">
-        {/* Left: Image Showcase Canvas */}
-        <div className="relative flex-1 bg-black/80 flex items-center justify-center overflow-hidden min-h-[350px] lg:min-h-[620px] select-none">
-          <div
-            className={`relative w-full h-full flex items-center justify-center p-4 transition-transform duration-300 ${
-              isZoomed ? "scale-125 cursor-zoom-out" : "cursor-zoom-in"
-            }`}
-            onClick={() => setIsZoomed(!isZoomed)}
-          >
-            <img
-              src={project.image}
-              alt={project.title}
-              className="max-h-[55vh] lg:max-h-[75vh] w-auto max-w-full object-contain rounded-xl shadow-2xl"
-            />
-          </div>
+        {/* Left: Canvas Area */}
+        <div className="relative flex-1 bg-black/90 flex items-center justify-center overflow-hidden min-h-[350px] lg:min-h-[620px] select-none">
+          {viewMode === "photo" ? (
+            <div
+              className={`relative w-full h-full flex items-center justify-center p-4 transition-transform duration-300 ${
+                isZoomed ? "scale-125 cursor-zoom-out" : "cursor-zoom-in"
+              }`}
+              onClick={() => setIsZoomed(!isZoomed)}
+            >
+              <img
+                src={project.image}
+                alt={project.title}
+                className="max-h-[55vh] lg:max-h-[75vh] w-auto max-w-full object-contain rounded-xl shadow-2xl"
+              />
+            </div>
+          ) : (
+            /* Blueprint CAD Diagram SVG */
+            <div className="w-full h-full p-8 flex flex-col items-center justify-center bg-[#091118] relative overflow-hidden">
+              {/* CAD Grid Background */}
+              <div
+                className="absolute inset-0 opacity-20 pointer-events-none"
+                style={{
+                  backgroundImage: "radial-gradient(#38bdf8 1px, transparent 1px)",
+                  backgroundSize: "24px 24px",
+                }}
+              />
+
+              <svg
+                viewBox="0 0 600 400"
+                className="w-full max-w-lg h-auto text-sky-400 stroke-current fill-none stroke-[1.5]"
+              >
+                {/* Outer Room Bounds */}
+                <rect x="50" y="40" width="500" height="320" rx="4" strokeWidth="2.5" />
+                {/* Windows */}
+                <line x1="200" y1="40" x2="400" y2="40" strokeWidth="6" stroke="#0284c7" />
+                <text x="270" y="32" fill="#38bdf8" fontSize="10" fontFamily="monospace" stroke="none">
+                  GLAZING (6.2M)
+                </text>
+
+                {/* Slat Wall partition */}
+                <line x1="120" y1="120" x2="120" y2="280" strokeDasharray="4 4" stroke="#d4af37" />
+                <text x="65" y="200" fill="#d4af37" fontSize="9" fontFamily="monospace" stroke="none" transform="rotate(-90 65,200)">
+                  ACOUSTIC SLATS
+                </text>
+
+                {/* Sectional Footprint */}
+                <rect x="220" y="140" width="220" height="110" rx="8" stroke="#cbd5e1" strokeWidth="1.5" />
+                <rect x="250" y="170" width="160" height="50" rx="4" stroke="#d4af37" strokeWidth="1" strokeDasharray="2 2" />
+                <text x="290" y="200" fill="#f8fafc" fontSize="11" fontFamily="sans-serif" stroke="none">
+                  {project.categoryLabel.toUpperCase()}
+                </text>
+
+                {/* Dimension Arrows */}
+                <line x1="50" y1="380" x2="550" y2="380" stroke="#64748b" />
+                <line x1="50" y1="375" x2="50" y2="385" stroke="#64748b" />
+                <line x1="550" y1="375" x2="550" y2="385" stroke="#64748b" />
+                <text x="260" y="394" fill="#94a3b8" fontSize="10" fontFamily="monospace" stroke="none">
+                  SCALE 1:50 · {project.area}
+                </text>
+              </svg>
+
+              <div className="absolute bottom-4 left-6 flex items-center gap-3 text-[11px] font-mono text-sky-400">
+                <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse" />
+                <span>ARCHITECTURAL SCHEMATIC · CAD SPEC {project.number}</span>
+              </div>
+            </div>
+          )}
 
           {/* Navigation Arrows */}
           <button
@@ -145,7 +224,6 @@ export default function ProjectLightbox({
         {/* Right: Architectural Dossier Panel */}
         <div className="w-full lg:w-[440px] p-6 lg:p-8 flex flex-col justify-between overflow-y-auto border-t lg:border-t-0 lg:border-l border-stone-800/80 bg-[#0E0F12]">
           <div className="space-y-6">
-            {/* Header info */}
             <div>
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-amber-400 font-semibold mb-1">
                 <span>{project.categoryLabel}</span>
@@ -179,7 +257,7 @@ export default function ProjectLightbox({
               </div>
             </div>
 
-            {/* Description */}
+            {/* Narrative */}
             <div>
               <h4 className="text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-1.5">
                 Design Narrative
@@ -189,7 +267,7 @@ export default function ProjectLightbox({
               </p>
             </div>
 
-            {/* Architectural Highlights */}
+            {/* Highlights */}
             <div>
               <h4 className="text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-2">
                 Craft Highlights
@@ -204,7 +282,7 @@ export default function ProjectLightbox({
               </div>
             </div>
 
-            {/* Material Palette Swatches */}
+            {/* Palette */}
             <div>
               <div className="flex items-center justify-between text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-2">
                 <span>Material Palette</span>
@@ -237,7 +315,7 @@ export default function ProjectLightbox({
               </div>
             </div>
 
-            {/* Materials Used */}
+            {/* Materials */}
             <div>
               <h4 className="text-[11px] uppercase tracking-wider text-stone-400 font-medium mb-1.5">
                 Primary Materials

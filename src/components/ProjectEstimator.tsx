@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Calculator, Sparkles, Clock, CheckCircle2, ArrowRight, ShieldCheck } from "lucide-react";
+import { Calculator, Clock, CheckCircle2, ArrowRight, ShieldCheck } from "lucide-react";
 
 interface EstimatorProps {
   onBookWithEstimate: (details: string) => void;
 }
+
+type Currency = "USD" | "KES" | "GBP" | "EUR";
 
 const SPACE_TYPES = [
   { id: "penthouse", label: "Penthouse / High-Rise", baseRate: 1.15, typicalWeeks: 12 },
@@ -20,24 +22,28 @@ const FINISH_TIERS = [
     id: "contemporary",
     name: "Modern Contemporary Craft",
     usdPerSqFt: 35,
-    kesPerSqFt: 4500,
     desc: "Refined architectural lines, premium acoustic wall treatments, bespoke imported lighting, and designer modular furnishings.",
   },
   {
     id: "luxury",
     name: "Luxury Architectural Atelier",
     usdPerSqFt: 65,
-    kesPerSqFt: 8400,
     desc: "Custom tongue-and-groove millwork, Italian bookmatched marble surfaces, drop ceiling cove lighting, and tailored upholstery.",
   },
   {
     id: "haute",
     name: "Haute Couture Monolith",
     usdPerSqFt: 110,
-    kesPerSqFt: 14200,
     desc: "Complete structural reconfiguration, museum-grade Dali lighting, rare Roman travertine, invisible frameless portals, and curated art.",
   },
 ];
+
+const CURRENCY_CONFIG: Record<Currency, { symbol: string; label: string; rateFromUsd: number; suffix?: string }> = {
+  USD: { symbol: "$", label: "USD ($)", rateFromUsd: 1.0 },
+  KES: { symbol: "KSh ", label: "KES (KSh)", rateFromUsd: 130.0 },
+  GBP: { symbol: "£", label: "GBP (£)", rateFromUsd: 0.78 },
+  EUR: { symbol: "€", label: "EUR (€)", rateFromUsd: 0.92 },
+};
 
 export default function ProjectEstimator({ onBookWithEstimate }: EstimatorProps) {
   const [selectedSpace, setSelectedSpace] = useState<string>("penthouse");
@@ -46,11 +52,12 @@ export default function ProjectEstimator({ onBookWithEstimate }: EstimatorProps)
   const [includeJoinery, setIncludeJoinery] = useState<boolean>(true);
   const [includeLighting, setIncludeLighting] = useState<boolean>(true);
   const [includeStone, setIncludeStone] = useState<boolean>(true);
-  const [currency, setCurrency] = useState<"USD" | "KES">("USD");
+  const [currency, setCurrency] = useState<Currency>("USD");
 
   const calculation = useMemo(() => {
     const space = SPACE_TYPES.find((s) => s.id === selectedSpace) || SPACE_TYPES[0];
     const tier = FINISH_TIERS.find((t) => t.id === selectedTier) || FINISH_TIERS[1];
+    const curr = CURRENCY_CONFIG[currency];
 
     let addOnMultiplier = 1.0;
     if (includeJoinery) addOnMultiplier += 0.12;
@@ -58,40 +65,38 @@ export default function ProjectEstimator({ onBookWithEstimate }: EstimatorProps)
     if (includeStone) addOnMultiplier += 0.15;
 
     const baseCostUsd = sqFt * tier.usdPerSqFt * space.baseRate * addOnMultiplier;
-    const baseCostKes = sqFt * tier.kesPerSqFt * space.baseRate * addOnMultiplier;
+    const minUsd = baseCostUsd * 0.9;
+    const maxUsd = baseCostUsd * 1.15;
 
-    // Timeline calculation based on sqft and space type
+    const minConverted = minUsd * curr.rateFromUsd;
+    const maxConverted = maxUsd * curr.rateFromUsd;
+
     const estimatedWeeks = Math.max(
       4,
       Math.round(space.typicalWeeks * Math.pow(sqFt / 2000, 0.4))
     );
 
     return {
-      minUsd: Math.round((baseCostUsd * 0.9) / 500) * 500,
-      maxUsd: Math.round((baseCostUsd * 1.15) / 500) * 500,
-      minKes: Math.round((baseCostKes * 0.9) / 50000) * 50000,
-      maxKes: Math.round((baseCostKes * 1.15) / 50000) * 50000,
+      minVal: currency === "KES" ? Math.round(minConverted / 50000) * 50000 : Math.round(minConverted / 500) * 500,
+      maxVal: currency === "KES" ? Math.round(maxConverted / 50000) * 50000 : Math.round(maxConverted / 500) * 500,
+      symbol: curr.symbol,
+      ratePerSqFt: Math.round(tier.usdPerSqFt * curr.rateFromUsd),
       weeks: estimatedWeeks,
       spaceLabel: space.label,
       tierName: tier.name,
     };
-  }, [selectedSpace, sqFt, selectedTier, includeJoinery, includeLighting, includeStone]);
+  }, [selectedSpace, sqFt, selectedTier, includeJoinery, includeLighting, includeStone, currency]);
 
   const handleProceed = () => {
     const summary = `${calculation.spaceLabel} (${sqFt.toLocaleString()} sq ft) · ${
       calculation.tierName
-    } · Est: ${
-      currency === "USD"
-        ? `$${calculation.minUsd.toLocaleString()} - $${calculation.maxUsd.toLocaleString()}`
-        : `KES ${calculation.minKes.toLocaleString()} - ${calculation.maxKes.toLocaleString()}`
-    } (${calculation.weeks} weeks)`;
+    } · Est: ${calculation.symbol}${calculation.minVal.toLocaleString()} - ${calculation.symbol}${calculation.maxVal.toLocaleString()} (${calculation.weeks} weeks)`;
     onBookWithEstimate(summary);
   };
 
   return (
     <section id="estimator" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
       <div className="rounded-3xl border border-stone-800 bg-[#0C0D10] p-8 md:p-12 shadow-2xl relative overflow-hidden">
-        {/* Subtle Ambient Gold Gradient */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-2xl mb-10">
@@ -180,9 +185,7 @@ export default function ProjectEstimator({ onBookWithEstimate }: EstimatorProps)
                         {tier.name}
                       </span>
                       <span className="text-[11px] font-mono text-amber-300">
-                        {currency === "USD"
-                          ? `~$${tier.usdPerSqFt}/sq ft`
-                          : `~KES ${tier.kesPerSqFt.toLocaleString()}/sq ft`}
+                        ~{calculation.symbol}{Math.round(tier.usdPerSqFt * CURRENCY_CONFIG[currency].rateFromUsd).toLocaleString()}/sq ft
                       </span>
                     </div>
                     <p className="text-xs text-stone-400 leading-relaxed font-sans">
@@ -251,32 +254,25 @@ export default function ProjectEstimator({ onBookWithEstimate }: EstimatorProps)
           {/* Dynamic Estimate Summary Card */}
           <div className="lg:col-span-5 flex flex-col justify-between p-6 md:p-8 rounded-3xl bg-[#121317] border border-amber-500/30 shadow-2xl relative">
             <div>
-              {/* Currency Toggle */}
+              {/* Multi-Currency Switcher (USD, KES, GBP, EUR) */}
               <div className="flex items-center justify-between pb-6 border-b border-stone-800">
                 <span className="text-[11px] uppercase tracking-wider text-stone-400 font-medium">
-                  Currency Display
+                  Currency Selector
                 </span>
                 <div className="flex rounded-full bg-stone-900 p-1 border border-stone-700">
-                  <button
-                    onClick={() => setCurrency("USD")}
-                    className={`px-3 py-1 rounded-full text-[10px] font-mono font-medium transition ${
-                      currency === "USD"
-                        ? "bg-amber-400 text-stone-950 shadow"
-                        : "text-stone-400 hover:text-stone-200"
-                    }`}
-                  >
-                    USD ($)
-                  </button>
-                  <button
-                    onClick={() => setCurrency("KES")}
-                    className={`px-3 py-1 rounded-full text-[10px] font-mono font-medium transition ${
-                      currency === "KES"
-                        ? "bg-amber-400 text-stone-950 shadow"
-                        : "text-stone-400 hover:text-stone-200"
-                    }`}
-                  >
-                    KES (KSh)
-                  </button>
+                  {(["USD", "KES", "GBP", "EUR"] as Currency[]).map((cur) => (
+                    <button
+                      key={cur}
+                      onClick={() => setCurrency(cur)}
+                      className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-medium transition ${
+                        currency === cur
+                          ? "bg-amber-400 text-stone-950 shadow font-semibold"
+                          : "text-stone-400 hover:text-stone-200"
+                      }`}
+                    >
+                      {cur}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -285,18 +281,18 @@ export default function ProjectEstimator({ onBookWithEstimate }: EstimatorProps)
                 <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold block mb-1">
                   Estimated Investment Range
                 </span>
-                <div className="font-serif text-3xl md:text-4xl text-stone-100 tracking-tight">
-                  {currency === "USD" ? (
+                <div className="font-serif text-3xl sm:text-4xl text-stone-100 tracking-tight">
+                  {currency === "KES" ? (
                     <>
-                      ${calculation.minUsd.toLocaleString()}{" "}
+                      KSh {(calculation.minVal / 1000000).toFixed(2)}M{" "}
                       <span className="text-stone-500 text-2xl font-light">–</span>{" "}
-                      ${calculation.maxUsd.toLocaleString()}
+                      KSh {(calculation.maxVal / 1000000).toFixed(2)}M
                     </>
                   ) : (
                     <>
-                      KSh {(calculation.minKes / 1000000).toFixed(2)}M{" "}
+                      {calculation.symbol}{calculation.minVal.toLocaleString()}{" "}
                       <span className="text-stone-500 text-2xl font-light">–</span>{" "}
-                      KSh {(calculation.maxKes / 1000000).toFixed(2)}M
+                      {calculation.symbol}{calculation.maxVal.toLocaleString()}
                     </>
                   )}
                 </div>

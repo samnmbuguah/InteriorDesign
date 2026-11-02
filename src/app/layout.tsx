@@ -38,6 +38,35 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "name": "AURA & NOIR Atelier",
+  "image": "https://interiordesign.akilinova.co.ke/portfolio/project-31.jpg",
+  "@id": "https://interiordesign.akilinova.co.ke",
+  "url": "https://interiordesign.akilinova.co.ke",
+  "telephone": "+254700892411",
+  "priceRange": "$$$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "The Pavilion, Riverside Drive",
+    "addressLocality": "Westlands, Nairobi",
+    "addressRegion": "Nairobi",
+    "addressCountry": "KE"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -1.2683,
+    "longitude": 36.8044
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "opens": "08:30",
+    "closes": "18:00"
+  }
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -45,6 +74,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-screen bg-[#090A0B] text-[#F4EFE6] antialiased selection:bg-[#D4AF37] selection:text-black">
         {children}
       </body>
