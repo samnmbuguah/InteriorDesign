@@ -47,3 +47,4 @@ In the Strapi Admin panel:
 3. **URL**: `http://localhost:3000/api/revalidate?secret=aura-noir-strapi-secret-key` (or your production domain).
 4. **Events**: Check `Entry > publish`, `Entry > unpublish`, `Entry > update`.
 5. Click **Save**. Any edits in Strapi will immediately update the live website!
+

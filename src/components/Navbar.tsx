@@ -70,6 +70,17 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
     setServicesDropdownOpen(false);
   }, [pathname]);
 
+  // Click outside to close services dropdown
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setServicesDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -95,7 +106,7 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
   const handleMouseLeaveServices = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setServicesDropdownOpen(false);
-    }, 220);
+    }, 320);
   };
 
   const isServiceActive = pathname.startsWith("/services");
@@ -180,13 +191,19 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
                 onMouseLeave={handleMouseLeaveServices}
                 ref={dropdownRef}
               >
-                <Link
-                  href="/services"
-                  className={`px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
-                    isServiceActive
+                <button
+                  type="button"
+                  onClick={() => {
+                    soundscape.playClick();
+                    setServicesDropdownOpen((prev) => !prev);
+                  }}
+                  className={`px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
+                    isServiceActive || servicesDropdownOpen
                       ? "bg-amber-500/15 text-amber-800 dark:text-amber-300 font-semibold border border-amber-500/30"
                       : "text-stone-700 dark:text-stone-300 hover:text-amber-700 dark:hover:text-amber-300 hover:bg-stone-100/80 dark:hover:bg-stone-800/50"
                   }`}
+                  aria-expanded={servicesDropdownOpen}
+                  aria-haspopup="true"
                 >
                   <Wrench className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                   <span>Services</span>
@@ -195,101 +212,112 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
                       servicesDropdownOpen ? "rotate-180 text-amber-600" : "text-stone-400"
                     }`}
                   />
-                </Link>
+                </button>
 
-                {/* REVAMPED ARCHITECTURAL SERVICES MEGA-MENU WITH HIGH-RES IMAGERY & DEDICATED PAGES */}
+                {/* ARCHITECTURAL SERVICES MEGA-MENU WITH INVISIBLE HOVER BRIDGE & 7 DEDICATED PAGES */}
                 {servicesDropdownOpen && (
                   <div
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[760px] rounded-3xl bg-[#FAF8F5]/98 dark:bg-[#0B0C10]/98 backdrop-blur-2xl border border-stone-200 dark:border-stone-800 shadow-[0_25px_60px_rgba(0,0,0,0.18)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.7)] p-5 z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150"
                     onMouseEnter={handleMouseEnterServices}
                     onMouseLeave={handleMouseLeaveServices}
                   >
-                    {/* Header */}
-                    <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-stone-200 dark:border-stone-800">
-                      <div>
-                        <span className="text-[10px] uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1.5">
-                          <Wrench className="w-3 h-3" />
-                          7 In-House Workshop Disciplines
-                        </span>
-                        <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 font-normal">
-                          Explore Each Master Craft Discipline
-                        </h4>
-                      </div>
-                      <Link
-                        href="/services"
-                        onClick={() => setServicesDropdownOpen(false)}
-                        className="text-[11px] font-semibold text-amber-700 dark:text-amber-300 hover:underline flex items-center gap-1 uppercase tracking-wider"
-                      >
-                        <span>Full Dossier</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </Link>
-                    </div>
-
-                    {/* Services Grid with Real Photo Thumbnails */}
-                    <div className="grid grid-cols-12 gap-4">
-                      {/* Left: 7 Services with Thumbnails */}
-                      <div className="col-span-8 grid grid-cols-2 gap-2">
-                        {MAIN_SERVICES.map((srv) => (
-                          <Link
-                            key={srv.id}
-                            href={`/services/${srv.id}`}
-                            onClick={() => setServicesDropdownOpen(false)}
-                            className="group/item p-2 rounded-2xl hover:bg-white dark:hover:bg-stone-900/90 border border-transparent hover:border-amber-400/30 transition-all flex items-center gap-2.5"
-                          >
-                            <div className="relative w-11 h-11 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-950 shrink-0 border border-stone-200/60 dark:border-stone-800">
-                              <img
-                                src={srv.image}
-                                alt={srv.title}
-                                className="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-300"
-                              />
-                              <span className="absolute bottom-0 right-0 px-1 py-0.2 bg-stone-950/80 text-[8px] font-mono text-amber-300">
-                                {srv.number}
-                              </span>
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <h5 className="font-medium text-xs text-stone-900 dark:text-stone-100 group-hover/item:text-amber-700 dark:group-hover/item:text-amber-300 transition-colors truncate">
-                                {srv.title}
-                              </h5>
-                              <p className="text-[10px] text-stone-500 dark:text-stone-400 line-clamp-1 mt-0.5 normal-case font-sans">
-                                {srv.shortDesc}
-                              </p>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-
-                      {/* Right: Featured Survey Card */}
-                      <div className="col-span-4 rounded-2xl bg-gradient-to-br from-amber-500/10 to-amber-600/5 dark:from-amber-500/20 dark:to-stone-900/80 border border-amber-500/30 p-3.5 flex flex-col justify-between">
+                    <div className="w-[800px] rounded-3xl bg-[#FAF8F5]/98 dark:bg-[#0B0C10]/98 backdrop-blur-2xl border border-stone-200 dark:border-stone-800 shadow-[0_25px_60px_rgba(0,0,0,0.18)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.7)] p-5">
+                      {/* Header */}
+                      <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-stone-200 dark:border-stone-800">
                         <div>
-                          <div className="relative h-24 rounded-xl overflow-hidden mb-2.5 bg-stone-900">
-                            <img
-                              src="/portfolio/project-31.jpg"
-                              alt="Master Joinery"
-                              className="w-full h-full object-cover"
-                            />
-                            <div className="absolute inset-0 bg-stone-950/40" />
-                            <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded backdrop-blur-md bg-stone-950/80 text-[9px] font-mono text-amber-300">
-                              Nairobi Workshop
-                            </span>
-                          </div>
-                          <span className="text-[9px] uppercase tracking-widest text-amber-700 dark:text-amber-300 font-semibold block">
-                            Direct Workshop Survey
+                          <span className="text-[10px] uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1.5">
+                            <Wrench className="w-3 h-3" />
+                            7 In-House Workshop Disciplines
                           </span>
-                          <p className="text-[10px] text-stone-600 dark:text-stone-300 font-sans mt-0.5 normal-case leading-relaxed">
-                            Complimentary site survey & 3D joinery design across Nairobi.
-                          </p>
+                          <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 font-normal">
+                            Dedicated Architectural Pages & Dossiers
+                          </h4>
+                        </div>
+                        <Link
+                          href="/services"
+                          onClick={() => setServicesDropdownOpen(false)}
+                          className="text-[11px] font-semibold text-amber-700 dark:text-amber-300 hover:underline flex items-center gap-1 uppercase tracking-wider"
+                        >
+                          <span>All 7 Disciplines Overview</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </Link>
+                      </div>
+
+                      {/* Services Grid with Real Photo Thumbnails */}
+                      <div className="grid grid-cols-12 gap-4">
+                        {/* Left: 7 Services with Thumbnails */}
+                        <div className="col-span-8 grid grid-cols-2 gap-2">
+                          {MAIN_SERVICES.map((srv) => (
+                            <Link
+                              key={srv.id}
+                              href={`/services/${srv.id}`}
+                              prefetch={true}
+                              onClick={() => {
+                                soundscape.playClick();
+                                setServicesDropdownOpen(false);
+                              }}
+                              className="group/item p-2.5 rounded-2xl hover:bg-white dark:hover:bg-stone-900 border border-transparent hover:border-amber-400/40 transition-all flex items-center gap-2.5 relative z-20 cursor-pointer shadow-none hover:shadow-md"
+                            >
+                              <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-950 shrink-0 border border-stone-200/80 dark:border-stone-800">
+                                <img
+                                  src={srv.image}
+                                  alt={srv.title}
+                                  className="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-300"
+                                />
+                                <span className="absolute bottom-0 right-0 px-1 py-0.2 bg-stone-950/85 text-[8px] font-mono text-amber-300">
+                                  {srv.number}
+                                </span>
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between">
+                                  <h5 className="font-medium text-xs text-stone-900 dark:text-stone-100 group-hover/item:text-amber-700 dark:group-hover/item:text-amber-300 transition-colors truncate">
+                                    {srv.title}
+                                  </h5>
+                                  <ArrowRight className="w-3 h-3 text-stone-300 dark:text-stone-600 group-hover/item:text-amber-600 group-hover/item:translate-x-0.5 transition-all shrink-0 ml-1" />
+                                </div>
+                                <p className="text-[10px] text-stone-500 dark:text-stone-400 line-clamp-1 mt-0.5 normal-case font-sans">
+                                  {srv.shortDesc}
+                                </p>
+                              </div>
+                            </Link>
+                          ))}
                         </div>
 
-                        <button
-                          onClick={() => {
-                            setServicesDropdownOpen(false);
-                            handleBooking("Complimentary Site Survey & Laser Measurement");
-                          }}
-                          className="mt-3 py-2 px-3 rounded-full bg-stone-900 text-white dark:bg-amber-400 dark:text-stone-950 text-[10px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1 hover:brightness-105 transition"
-                        >
-                          <span>Book Free Survey</span>
-                          <ArrowRight className="w-3 h-3" />
-                        </button>
+                        {/* Right: Featured Survey Card */}
+                        <div className="col-span-4 rounded-2xl bg-gradient-to-br from-amber-500/10 to-amber-600/5 dark:from-amber-500/20 dark:to-stone-900/80 border border-amber-500/30 p-3.5 flex flex-col justify-between">
+                          <div>
+                            <div className="relative h-24 rounded-xl overflow-hidden mb-2.5 bg-stone-900">
+                              <img
+                                src="/portfolio/project-31.jpg"
+                                alt="Master Joinery"
+                                className="w-full h-full object-cover"
+                              />
+                              <div className="absolute inset-0 bg-stone-950/40" />
+                              <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded backdrop-blur-md bg-stone-950/80 text-[9px] font-mono text-amber-300">
+                                Nairobi Workshop
+                              </span>
+                            </div>
+                            <span className="text-[9px] uppercase tracking-widest text-amber-700 dark:text-amber-300 font-semibold block">
+                              Direct Workshop Survey
+                            </span>
+                            <p className="text-[10px] text-stone-600 dark:text-stone-300 font-sans mt-0.5 normal-case leading-relaxed font-light">
+                              Complimentary laser survey & 3D CAD modeling across Nairobi.
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              soundscape.playClick();
+                              setServicesDropdownOpen(false);
+                              handleBooking("Complimentary Site Survey & Laser Measurement");
+                            }}
+                            className="mt-3 py-2 px-3 rounded-full bg-stone-900 text-white dark:bg-amber-400 dark:text-stone-950 text-[10px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1 hover:brightness-105 transition cursor-pointer"
+                          >
+                            <span>Book Free Survey</span>
+                            <ArrowRight className="w-3 h-3" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -505,39 +533,59 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
                 </Link>
 
                 {/* Services Accordion with 7 Dedicated Service Pages */}
-                <div className="rounded-xl border border-stone-200 dark:border-stone-800 overflow-hidden my-2">
-                  <div className="flex items-center justify-between p-2.5 bg-stone-50 dark:bg-stone-900/60">
-                    <Link
-                      href="/services"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="text-xs font-semibold flex items-center gap-2 text-stone-900 dark:text-stone-100 uppercase tracking-wider"
-                    >
-                      <Wrench className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                      <span>7 Workshop Disciplines</span>
-                    </Link>
-                    <button
-                      onClick={() => setMobileServicesAccordion(!mobileServicesAccordion)}
-                      className="p-1 rounded-lg text-stone-500 hover:text-stone-900 dark:hover:text-stone-200"
-                      aria-label="Expand Services"
-                    >
+                <div className="rounded-2xl border border-stone-200 dark:border-stone-800 overflow-hidden my-2 shadow-sm">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      soundscape.playClick();
+                      setMobileServicesAccordion(!mobileServicesAccordion);
+                    }}
+                    className="w-full flex items-center justify-between p-3 bg-stone-100 dark:bg-stone-900 text-left cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Wrench className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                      <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 uppercase tracking-wider">
+                        7 Workshop Disciplines
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[10px] text-amber-700 dark:text-amber-400 font-mono font-medium">
+                      <span>{mobileServicesAccordion ? "Hide" : "Show (7)"}</span>
                       <ChevronDown
                         className={`w-4 h-4 transition-transform duration-200 ${
                           mobileServicesAccordion ? "rotate-180 text-amber-600" : ""
                         }`}
                       />
-                    </button>
-                  </div>
+                    </div>
+                  </button>
 
                   {mobileServicesAccordion && (
-                    <div className="p-2 space-y-1 bg-white dark:bg-[#0A0B0E] border-t border-stone-200 dark:border-stone-800">
+                    <div className="p-2 space-y-1.5 bg-white dark:bg-[#0A0B0E] border-t border-stone-200 dark:border-stone-800">
+                      {/* Overview Link */}
+                      <Link
+                        href="/services"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="p-2.5 rounded-xl flex items-center justify-between bg-amber-500/10 text-amber-800 dark:text-amber-300 font-semibold text-xs border border-amber-500/20"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Wrench className="w-3.5 h-3.5" />
+                          <span>All Disciplines Overview</span>
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+
+                      {/* 7 Dedicated Discipline Pages */}
                       {MAIN_SERVICES.map((srv) => (
                         <Link
                           key={srv.id}
                           href={`/services/${srv.id}`}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="p-2 rounded-lg flex items-center gap-2.5 hover:bg-stone-50 dark:hover:bg-stone-900 transition"
+                          prefetch={true}
+                          onClick={() => {
+                            soundscape.playClick();
+                            setMobileMenuOpen(false);
+                          }}
+                          className="p-2.5 rounded-xl flex items-center gap-3 hover:bg-stone-50 dark:hover:bg-stone-900 transition border border-transparent hover:border-amber-400/30"
                         >
-                          <div className="w-8 h-8 rounded-lg overflow-hidden bg-stone-200 dark:bg-stone-800 shrink-0">
+                          <div className="w-10 h-10 rounded-lg overflow-hidden bg-stone-200 dark:bg-stone-800 shrink-0 border border-stone-200 dark:border-stone-700">
                             <img
                               src={srv.image}
                               alt={srv.title}
@@ -546,18 +594,18 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
                           </div>
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-1.5">
-                              <span className="font-mono text-[9px] text-amber-600 font-semibold">
+                              <span className="font-mono text-[9px] text-amber-600 dark:text-amber-400 font-semibold">
                                 {srv.number}
                               </span>
                               <h5 className="text-xs font-medium text-stone-900 dark:text-stone-100 truncate">
                                 {srv.title}
                               </h5>
                             </div>
-                            <span className="text-[10px] text-stone-500 block truncate">
-                              {srv.typicalTimeline}
+                            <span className="text-[10px] text-stone-500 dark:text-stone-400 block truncate font-sans font-light">
+                              {srv.typicalTimeline} · View Details
                             </span>
                           </div>
-                          <ArrowRight className="w-3 h-3 text-stone-400 shrink-0" />
+                          <ArrowRight className="w-3.5 h-3.5 text-stone-400 shrink-0" />
                         </Link>
                       ))}
                     </div>

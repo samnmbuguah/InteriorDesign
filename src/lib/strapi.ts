@@ -98,8 +98,11 @@ export async function getStrapiServices(): Promise<ServiceItem[]> {
     if (data && Array.isArray(data.data) && data.data.length > 0) {
       return data.data.map((item) => {
         const attr = (item.attributes || item) as Record<string, unknown>;
+        const serviceId = String(attr.slug || attr.id || item.id);
+        const fallback = MAIN_SERVICES.find((s) => s.id === serviceId) || MAIN_SERVICES[0];
+
         const heroImg = attr.image as Record<string, unknown> | string | undefined;
-        let imgUrl = "/portfolio/project-07.jpg";
+        let imgUrl = fallback.image;
         if (typeof heroImg === "string") {
           imgUrl = heroImg;
         } else if (heroImg && typeof heroImg === "object") {
@@ -111,14 +114,15 @@ export async function getStrapiServices(): Promise<ServiceItem[]> {
         }
 
         return {
-          id: String(attr.slug || attr.id || item.id),
-          number: String(attr.number || "01"),
-          title: String(attr.title || "Architectural Service"),
-          shortDesc: String(attr.shortDesc || ""),
-          description: String(attr.description || ""),
-          features: Array.isArray(attr.features) ? (attr.features as string[]) : [],
-          materialsUsed: Array.isArray(attr.materialsUsed) ? (attr.materialsUsed as string[]) : [],
-          typicalTimeline: String(attr.typicalTimeline || "2 – 4 Weeks"),
+          ...fallback,
+          id: serviceId,
+          number: String(attr.number || fallback.number),
+          title: String(attr.title || fallback.title),
+          shortDesc: String(attr.shortDesc || fallback.shortDesc),
+          description: String(attr.description || fallback.description),
+          features: Array.isArray(attr.features) && attr.features.length > 0 ? (attr.features as string[]) : fallback.features,
+          materialsUsed: Array.isArray(attr.materialsUsed) && attr.materialsUsed.length > 0 ? (attr.materialsUsed as string[]) : fallback.materialsUsed,
+          typicalTimeline: String(attr.typicalTimeline || fallback.typicalTimeline),
           image: imgUrl,
         };
       });
@@ -143,16 +147,20 @@ export async function getStrapiServiceBySlug(slug: string): Promise<ServiceItem 
     if (data && Array.isArray(data.data) && data.data.length > 0) {
       const item = data.data[0];
       const attr = (item.attributes || item) as Record<string, unknown>;
+      const serviceId = String(attr.slug || slug);
+      const fallback = MAIN_SERVICES.find((s) => s.id === serviceId) || MAIN_SERVICES[0];
+
       return {
-        id: String(attr.slug || slug),
-        number: String(attr.number || "01"),
-        title: String(attr.title || "Architectural Service"),
-        shortDesc: String(attr.shortDesc || ""),
-        description: String(attr.description || ""),
-        features: Array.isArray(attr.features) ? (attr.features as string[]) : [],
-        materialsUsed: Array.isArray(attr.materialsUsed) ? (attr.materialsUsed as string[]) : [],
-        typicalTimeline: String(attr.typicalTimeline || "2 – 4 Weeks"),
-        image: typeof attr.image === "string" ? attr.image : "/portfolio/project-07.jpg",
+        ...fallback,
+        id: serviceId,
+        number: String(attr.number || fallback.number),
+        title: String(attr.title || fallback.title),
+        shortDesc: String(attr.shortDesc || fallback.shortDesc),
+        description: String(attr.description || fallback.description),
+        features: Array.isArray(attr.features) && attr.features.length > 0 ? (attr.features as string[]) : fallback.features,
+        materialsUsed: Array.isArray(attr.materialsUsed) && attr.materialsUsed.length > 0 ? (attr.materialsUsed as string[]) : fallback.materialsUsed,
+        typicalTimeline: String(attr.typicalTimeline || fallback.typicalTimeline),
+        image: typeof attr.image === "string" ? attr.image : fallback.image,
       };
     }
   } catch {

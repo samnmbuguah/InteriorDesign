@@ -7,6 +7,7 @@ node_modules/
 deploy.tar.gz
 .archives/
 archives/
+.production_bundle/
 .env*.local
 .env
 

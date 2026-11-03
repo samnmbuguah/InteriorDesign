@@ -26,6 +26,12 @@ import {
   Calculator,
   Compass,
   Award,
+  ChevronDown,
+  Wrench,
+  Cpu,
+  FileCheck2,
+  Quote,
+  Check,
 } from "lucide-react";
 
 interface ServiceDetailClientProps {
@@ -46,10 +52,13 @@ export default function ServiceDetailClient({
   const [pinnedIds, setPinnedIds] = useState<string[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Estimator State tailored to service
-  const [unitCount, setUnitCount] = useState<number>(15);
+  // Estimator State tailored to this specific discipline
+  const [unitCount, setUnitCount] = useState<number>(service.defaultUnitCount || 15);
   const [materialTier, setMaterialTier] = useState<"standard" | "premium" | "masterpiece">("premium");
-  const [ledIncluded, setLedIncluded] = useState<boolean>(true);
+  const [addonIncluded, setAddonIncluded] = useState<boolean>(true);
+
+  // FAQ Accordion State
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   const togglePin = (projId: string, projTitle: string) => {
     soundscape.playClick();
@@ -67,23 +76,19 @@ export default function ServiceDetailClient({
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  // Calculate live dynamic estimate for this service
-  const baseRatePerUnit = {
-    staircases: 28000, // per tread/step
-    gypsum: 3800, // per sq meter
-    flooring: 5500, // per sq meter
-    cabinetry: 32000, // per linear foot
-    tv_stands: 18000, // per linear foot
-    doors: 45000, // per door assembly
-    renovation: 12000, // per sq meter
-  }[service.id] || 25000;
+  const toggleFaq = (index: number) => {
+    soundscape.playClick();
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  };
 
+  // Calculate live dynamic estimate for this discipline
+  const baseRate = service.baseRatePerUnit || 25000;
   const multiplier = materialTier === "standard" ? 0.85 : materialTier === "premium" ? 1.0 : 1.35;
-  const ledCost = ledIncluded ? 25000 : 0;
-  const estimatedCostKES = Math.round(unitCount * baseRatePerUnit * multiplier + ledCost);
+  const addonCost = addonIncluded ? 28000 : 0;
+  const estimatedCostKES = Math.round(unitCount * baseRate * multiplier + addonCost);
 
   return (
-    <main className="min-h-screen bg-[#FAF8F5] text-[#18191B] dark:bg-[#090A0B] dark:text-[#F4EFE6] selection:bg-[#D4AF37] selection:text-black transition-colors duration-300">
+    <main className="min-h-screen bg-[#FAF8F5] text-[#18191B] dark:bg-[#090A0B] dark:text-[#F4EFE6] selection:bg-[#D4AF37] selection:text-black transition-colors duration-300 font-sans">
       <CustomCursor />
       <Navbar />
 
@@ -124,13 +129,19 @@ export default function ServiceDetailClient({
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs tracking-widest uppercase font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>
-                Discipline {service.number} of 07 · Master Architectural Craft
+                Discipline {service.number} of 07 · In-House Workshop Craft
               </span>
             </div>
 
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-stone-900 dark:text-stone-100 leading-[1.12]">
               {service.title}
             </h1>
+
+            {service.tagline && (
+              <p className="font-serif italic text-lg sm:text-xl text-amber-800 dark:text-amber-300/90 font-light">
+                {service.tagline}
+              </p>
+            )}
 
             <p className="text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed font-sans max-w-2xl font-light">
               {service.description}
@@ -156,7 +167,7 @@ export default function ServiceDetailClient({
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-4">
               <button
                 onClick={() => openBooking(`Custom Quotation: ${service.title}`)}
-                className="px-8 py-4 rounded-full bg-stone-900 text-white dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-400 dark:text-stone-950 font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl shadow-amber-500/10 hover:brightness-105 transition"
+                className="px-8 py-4 rounded-full bg-stone-900 text-white dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-400 dark:text-stone-950 font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl shadow-amber-500/10 hover:brightness-105 transition active:scale-95"
               >
                 <span>Request Custom Quote</span>
                 <ArrowRight className="w-4 h-4" />
@@ -176,10 +187,10 @@ export default function ServiceDetailClient({
 
               <a
                 href={CONTACT_INFO.telLink}
-                className="px-5 py-4 rounded-full border border-stone-300 dark:border-stone-800 bg-white/70 dark:bg-stone-900/70 text-stone-800 dark:text-stone-200 text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 hover:border-amber-500 transition shadow-sm"
+                className="px-5 py-4 rounded-full border border-stone-300 dark:border-stone-800 bg-white/70 dark:bg-stone-900/70 text-stone-800 dark:text-stone-200 text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 hover:border-amber-500 transition shadow-sm font-mono"
               >
                 <Phone className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                <span>Call {CONTACT_INFO.phoneDisplay}</span>
+                <span>{CONTACT_INFO.phoneDisplay}</span>
               </a>
             </div>
           </div>
@@ -209,7 +220,7 @@ export default function ServiceDetailClient({
                   <h4 className="font-serif text-lg font-normal text-stone-100">
                     {service.title}
                   </h4>
-                  <p className="text-xs text-stone-300 font-sans mt-1 line-clamp-1">
+                  <p className="text-xs text-stone-300 font-sans mt-1 line-clamp-1 font-light">
                     {service.shortDesc}
                   </p>
                 </div>
@@ -219,7 +230,304 @@ export default function ServiceDetailClient({
         </div>
       </section>
 
-      {/* 2. REELS SECTION (If videos exist for this craft) */}
+      {/* 2. IN-DEPTH ARCHITECTURAL DOSSIER OVERVIEW */}
+      {service.detailedOverview && service.detailedOverview.length > 0 && (
+        <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div className="lg:col-span-4">
+              <span className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-2 mb-2">
+                <FileCheck2 className="w-3.5 h-3.5" />
+                Architectural Standards Dossier
+              </span>
+              <h2 className="font-serif text-3xl text-stone-900 dark:text-stone-100 font-normal leading-tight">
+                Engineering, Geometry & Precision
+              </h2>
+              <p className="text-xs text-stone-500 dark:text-stone-400 font-sans mt-2">
+                How our master joiners and site engineers execute {service.title.toLowerCase()} to European architectural tolerances.
+              </p>
+            </div>
+
+            <div className="lg:col-span-8 space-y-4 text-sm sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed font-sans font-light">
+              {service.detailedOverview.map((paragraph, idx) => (
+                <p key={idx} className="p-5 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800 shadow-sm">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 3. 5-PHASE ARCHITECTURAL WORKFLOW TIMELINE */}
+      {service.workflowSteps && service.workflowSteps.length > 0 && (
+        <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
+          <div className="max-w-2xl mb-12">
+            <span className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-2 mb-2">
+              <Clock className="w-3.5 h-3.5" />
+              Guaranteed Execution Workflow
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal">
+              From Laser Survey to 10-Year Handover
+            </h2>
+            <p className="text-sm text-stone-600 dark:text-stone-400 mt-2 font-sans">
+              Our 5-phase delivery protocol ensures absolute clarity on timelines, structural quality controls, and client approvals at every milestone.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {service.workflowSteps.map((step, idx) => (
+              <div
+                key={idx}
+                className="p-5 rounded-3xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800 shadow-sm flex flex-col justify-between hover:border-amber-500/50 transition-all group"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-amber-500/15 text-amber-800 dark:text-amber-300">
+                      Phase {step.step}
+                    </span>
+                    <span className="text-[10px] font-mono text-stone-500 dark:text-stone-400">
+                      {step.duration}
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-base text-stone-900 dark:text-stone-100 font-medium group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
+                    {step.title}
+                  </h3>
+                  <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 font-sans font-light leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+
+                {step.deliverables && step.deliverables.length > 0 && (
+                  <div className="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800/80">
+                    <span className="text-[9px] uppercase tracking-widest text-amber-700 dark:text-amber-400 font-mono font-semibold block mb-1.5">
+                      Deliverables:
+                    </span>
+                    <ul className="space-y-1">
+                      {step.deliverables.map((item, dIdx) => (
+                        <li key={dIdx} className="text-[11px] text-stone-600 dark:text-stone-300 flex items-start gap-1.5">
+                          <Check className="w-3 h-3 text-emerald-600 shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 4. TECHNICAL SPECIFICATION MATRIX & DRILL PROTOCOLS */}
+      {service.technicalSpecs && (
+        <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
+          <div className="mb-10">
+            <span className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-2 mb-2">
+              <Cpu className="w-3.5 h-3.5" />
+              Technical Engineering Data Sheet
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal">
+              Hardware, Chemical & Structural Ratings
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800">
+              <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 uppercase tracking-widest block mb-1">
+                Structural Fasteners
+              </span>
+              <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 mb-1">
+                Fastening & Anchoring Protocol
+              </h4>
+              <p className="text-xs text-stone-600 dark:text-stone-300 font-sans leading-relaxed">
+                {service.technicalSpecs.fasteningProtocol}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800">
+              <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 uppercase tracking-widest block mb-1">
+                Material Chemistry
+              </span>
+              <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 mb-1">
+                Kiln Moisture & Preservation
+              </h4>
+              <p className="text-xs text-stone-600 dark:text-stone-300 font-sans leading-relaxed">
+                {service.technicalSpecs.moistureStandard}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800">
+              <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 uppercase tracking-widest block mb-1">
+                Structural Engineering
+              </span>
+              <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 mb-1">
+                Load & Deflection Tolerance
+              </h4>
+              <p className="text-xs text-stone-600 dark:text-stone-300 font-sans leading-relaxed">
+                {service.technicalSpecs.loadTolerance}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800">
+              <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 uppercase tracking-widest block mb-1">
+                Protective Surface
+              </span>
+              <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 mb-1">
+                Finishing Chemistry & Sealants
+              </h4>
+              <p className="text-xs text-stone-600 dark:text-stone-300 font-sans leading-relaxed">
+                {service.technicalSpecs.finishingChemistry}
+              </p>
+            </div>
+
+            {service.technicalSpecs.acousticRating && (
+              <div className="p-5 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800">
+                <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 uppercase tracking-widest block mb-1">
+                  Acoustic Dampening
+                </span>
+                <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 mb-1">
+                  Sound Isolation Rating
+                </h4>
+                <p className="text-xs text-stone-600 dark:text-stone-300 font-sans leading-relaxed">
+                  {service.technicalSpecs.acousticRating}
+                </p>
+              </div>
+            )}
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800">
+              <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 uppercase tracking-widest block mb-1">
+                Longevity & Guarantee
+              </span>
+              <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 mb-1">
+                Maintenance Lifecycle
+              </h4>
+              <p className="text-xs text-stone-600 dark:text-stone-300 font-sans leading-relaxed">
+                {service.technicalSpecs.maintenanceLife}
+              </p>
+            </div>
+          </div>
+
+          {/* Drill Rig & Fasteners Highlight Banner */}
+          <div className="mt-8 rounded-3xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#0D0E12] p-6 sm:p-8 shadow-md">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-5 relative">
+                <div className="relative h-60 sm:h-72 w-full rounded-2xl overflow-hidden bg-stone-950">
+                  <img
+                    src="/portfolio/drill-fastener-workshop.jpg"
+                    alt="Precision Drills and Architectural Screws"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3 p-3 rounded-xl backdrop-blur-md bg-stone-950/80 border border-white/10 text-white">
+                    <span className="text-[9px] uppercase font-mono text-amber-300 tracking-wider block">
+                      Fastening Standard
+                    </span>
+                    <span className="text-xs font-serif text-stone-100">
+                      High-Torque Driver Calibration & Torx Star Fasteners
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-7 space-y-4">
+                <div>
+                  <span className="text-[10px] uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 font-semibold block mb-1">
+                    Zero-Squeak Joint Guarantee
+                  </span>
+                  <h4 className="font-serif text-xl sm:text-2xl text-stone-900 dark:text-stone-100 font-normal">
+                    Precision Pre-Drill & High-Torque Screw Rig
+                  </h4>
+                  <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-sans leading-relaxed mt-2">
+                    We discard nails and soft slotted screws. Every structural joint in this discipline is secured with calibrated brushless 18V drivers, carbide-tipped stepped pilot bits, and corrosion-resistant Torx architectural screws that eliminate squeaks, drift, and structural loosening.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                  <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800">
+                    <span className="text-[10px] font-mono text-stone-500 uppercase block">
+                      Stepped Pilot Protocol
+                    </span>
+                    <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 mt-0.5 block">
+                      Countersunk Pilot Holes
+                    </span>
+                    <span className="text-[11px] text-stone-500 mt-1 block">
+                      Prevents grain splitting in kiln-dried African hardwood.
+                    </span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800">
+                    <span className="text-[10px] font-mono text-stone-500 uppercase block">
+                      Drive Geometry
+                    </span>
+                    <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 mt-0.5 block">
+                      Deep Star Torx Bit
+                    </span>
+                    <span className="text-[11px] text-stone-500 mt-1 block">
+                      Zero cam-out slippage with 3x higher clamping force.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 5. CRAFT DELIVERABLES & MATERIALS SPECIFICATIONS */}
+      <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-2 mb-2">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              Scope of Delivery & Architectural Standards
+            </span>
+            <h3 className="font-serif text-2xl sm:text-3xl font-normal text-stone-900 dark:text-stone-100 mb-4">
+              What We Deliver
+            </h3>
+            <div className="space-y-3">
+              {service.features.map((feat, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-3 p-3.5 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800 text-xs sm:text-sm text-stone-800 dark:text-stone-200"
+                >
+                  <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                  <span>{feat}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-2 mb-2">
+              <Award className="w-3.5 h-3.5" />
+              Master Materials & Hardware
+            </span>
+            <h3 className="font-serif text-2xl sm:text-3xl font-normal text-stone-900 dark:text-stone-100 mb-4">
+              Certified Workshop Materials
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {service.materialsUsed.map((mat, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800 flex flex-col justify-between"
+                >
+                  <span className="text-[10px] font-mono text-amber-600 dark:text-amber-400 uppercase tracking-widest">
+                    Material Grade 0{idx + 1}
+                  </span>
+                  <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 mt-1">
+                    {mat}
+                  </h4>
+                  <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-1">
+                    Kiln-dried, moisture tested & termite treated for Kenyan climate stability.
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. REELS SECTION (If videos exist for this craft) */}
       {relatedReels.length > 0 && (
         <section className="py-12 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
           <div className="mb-8">
@@ -255,7 +563,7 @@ export default function ServiceDetailClient({
                   <h3 className="font-serif text-lg text-stone-900 dark:text-stone-100 font-medium">
                     {reel.title}
                   </h3>
-                  <p className="text-xs text-stone-600 dark:text-stone-400 mt-1 font-sans">
+                  <p className="text-xs text-stone-600 dark:text-stone-400 mt-1 font-sans font-light">
                     {reel.description}
                   </p>
                 </div>
@@ -265,7 +573,7 @@ export default function ServiceDetailClient({
         </section>
       )}
 
-      {/* 3. DEDICATED REAL PROJECT IMAGERY GALLERY */}
+      {/* 7. DEDICATED REAL PROJECT IMAGERY GALLERY */}
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div>
@@ -283,7 +591,7 @@ export default function ServiceDetailClient({
 
           <button
             onClick={openLookbook}
-            className="px-5 py-2.5 rounded-full border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200 text-xs font-semibold flex items-center gap-2 hover:border-amber-500 transition"
+            className="px-5 py-2.5 rounded-full border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200 text-xs font-semibold flex items-center gap-2 hover:border-amber-500 transition shadow-sm"
           >
             <Heart className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
             <span>Lookbook ({pinnedIds.length} Pinned)</span>
@@ -375,7 +683,7 @@ export default function ServiceDetailClient({
         </div>
       </section>
 
-      {/* 4. BEFORE & AFTER TRANSFORMATION SHOWCASE */}
+      {/* 8. BEFORE & AFTER TRANSFORMATION SHOWCASE */}
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
         <div className="max-w-2xl mb-10">
           <span className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-2 mb-2">
@@ -395,7 +703,7 @@ export default function ServiceDetailClient({
         </div>
       </section>
 
-      {/* 5. REACTIVE DISCIPLINE COST & SCOPE ESTIMATOR */}
+      {/* 9. REACTIVE DISCIPLINE COST & SCOPE ESTIMATOR */}
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-5 space-y-4">
@@ -407,7 +715,7 @@ export default function ServiceDetailClient({
               Instant Workshop Estimate for {service.title}
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-sans leading-relaxed">
-              Adjust the scale, timber & material grade, and architectural lighting to calculate realistic turnkey investment benchmarks in Kenyan Shillings.
+              Adjust the scale in {service.unitName || "units"}, select timber/material grade, and toggle architectural options to calculate realistic turnkey investment benchmarks in Kenyan Shillings.
             </p>
 
             <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-800 dark:text-amber-200 space-y-1">
@@ -423,16 +731,16 @@ export default function ServiceDetailClient({
             <div className="space-y-3 mb-6">
               <div className="flex items-center justify-between text-xs font-semibold">
                 <span className="text-stone-700 dark:text-stone-300 uppercase tracking-wider">
-                  Scope Scale ({unitCount} Units / Modules)
+                  Scope Scale: {unitCount} {service.unitName || "Units"}
                 </span>
                 <span className="font-mono text-amber-700 dark:text-amber-400 text-sm">
-                  {unitCount} units
+                  {unitCount} {service.unitName || "Units"}
                 </span>
               </div>
               <input
                 type="range"
                 min="5"
-                max="60"
+                max={service.defaultUnitCount ? Math.max(service.defaultUnitCount * 3, 50) : 60}
                 value={unitCount}
                 onChange={(e) => {
                   soundscape.playClick();
@@ -471,22 +779,22 @@ export default function ServiceDetailClient({
               </div>
             </div>
 
-            {/* LED Cove Option */}
+            {/* Premium Treatment Add-On Option */}
             <div className="flex items-center justify-between p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 mb-6">
               <div className="text-xs">
                 <span className="font-semibold text-stone-900 dark:text-stone-100 block">
-                  Concealed LED Warm Ambient Channel Lighting
+                  Concealed Architectural LED Channel / Acoustic Isolation Package
                 </span>
                 <span className="text-[11px] text-stone-500">
-                  Dimmable warm 2700K zero-glare architectural cove illumination
+                  Dimmable warm 2700K illumination & anti-vibration damping barrier
                 </span>
               </div>
               <input
                 type="checkbox"
-                checked={ledIncluded}
+                checked={addonIncluded}
                 onChange={(e) => {
                   soundscape.playClick();
-                  setLedIncluded(e.target.checked);
+                  setAddonIncluded(e.target.checked);
                 }}
                 className="w-5 h-5 accent-amber-600 rounded cursor-pointer"
               />
@@ -502,15 +810,15 @@ export default function ServiceDetailClient({
                   KES {estimatedCostKES.toLocaleString()}
                 </div>
                 <span className="text-[10px] text-stone-400 font-mono">
-                  Includes manufacturing, site fitting & polyurethane protection
+                  Includes workshop fabrication, site fitting & polyurethane protection
                 </span>
               </div>
 
               <button
                 onClick={() =>
                   openBooking(
-                    `Quotation for ${service.title} (${unitCount} units, ${materialTier} tier, LED: ${
-                      ledIncluded ? "Yes" : "No"
+                    `Quotation for ${service.title} (${unitCount} ${service.unitName}, ${materialTier} tier, Add-on: ${
+                      addonIncluded ? "Yes" : "No"
                     }) - Approx KES ${estimatedCostKES.toLocaleString()}`
                   )
                 }
@@ -524,125 +832,79 @@ export default function ServiceDetailClient({
         </div>
       </section>
 
-      {/* 6. CRAFT DELIVERABLES & MATERIALS SPECIFICATIONS */}
-      <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div>
+      {/* 10. AUTHENTIC CLIENT TESTIMONIAL CARD */}
+      {service.clientQuote && (
+        <section className="py-12 px-6 md:px-12 max-w-7xl mx-auto">
+          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
+            <div className="space-y-3 max-w-3xl">
+              <Quote className="w-8 h-8 text-amber-600 dark:text-amber-400 opacity-60" />
+              <p className="font-serif italic text-lg sm:text-2xl text-stone-900 dark:text-stone-100 leading-snug">
+                &ldquo;{service.clientQuote.text}&rdquo;
+              </p>
+              <div className="flex items-center gap-2 pt-1 text-xs font-mono text-amber-800 dark:text-amber-300">
+                <span className="font-semibold">{service.clientQuote.client}</span>
+                <span>·</span>
+                <span>{service.clientQuote.location}</span>
+                <span>·</span>
+                <span>Completed {service.clientQuote.year}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => openBooking(`Site Survey for ${service.title}`)}
+              className="px-6 py-3 rounded-full bg-stone-900 text-white dark:bg-amber-400 dark:text-stone-950 font-bold text-xs uppercase tracking-wider hover:brightness-105 transition shrink-0"
+            >
+              Book Matching Survey
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* 11. ARCHITECTURAL FAQS ACCORDION */}
+      {service.faqs && service.faqs.length > 0 && (
+        <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
+          <div className="max-w-2xl mb-10">
             <span className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-2 mb-2">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              Scope of Delivery & Architectural Standards
+              <Compass className="w-3.5 h-3.5" />
+              Frequently Asked Technical Questions
             </span>
-            <h3 className="font-serif text-2xl sm:text-3xl font-normal text-stone-900 dark:text-stone-100 mb-4">
-              What We Deliver
-            </h3>
-            <div className="space-y-3">
-              {service.features.map((feat, idx) => (
+            <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal">
+              Common Inquiries for {service.title}
+            </h2>
+          </div>
+
+          <div className="space-y-3 max-w-4xl">
+            {service.faqs.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
                 <div
                   key={idx}
-                  className="flex items-start gap-3 p-3.5 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800 text-xs sm:text-sm text-stone-800 dark:text-stone-200"
+                  className="rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#0D0E12] overflow-hidden transition-all shadow-sm"
                 >
-                  <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                  <span>{feat}</span>
+                  <button
+                    onClick={() => toggleFaq(idx)}
+                    className="w-full p-5 text-left flex items-center justify-between gap-4 font-serif text-base sm:text-lg text-stone-900 dark:text-stone-100 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                  >
+                    <span>{faq.question}</span>
+                    <ChevronDown
+                      className={`w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 transition-transform duration-200 ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {isOpen && (
+                    <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-sans font-light leading-relaxed border-t border-stone-100 dark:border-stone-800/80 animate-in fade-in duration-200">
+                      {faq.answer}
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
+        </section>
+      )}
 
-          <div>
-            <span className="text-xs uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-2 mb-2">
-              <Award className="w-3.5 h-3.5" />
-              Master Materials & Hardware
-            </span>
-            <h3 className="font-serif text-2xl sm:text-3xl font-normal text-stone-900 dark:text-stone-100 mb-4">
-              Certified Workshop Materials
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {service.materialsUsed.map((mat, idx) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-2xl bg-white dark:bg-[#0D0E12] border border-stone-200 dark:border-stone-800 flex flex-col justify-between"
-                >
-                  <span className="text-[10px] font-mono text-amber-600 dark:text-amber-400 uppercase tracking-widest">
-                    Material Grade 0{idx + 1}
-                  </span>
-                  <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 mt-1">
-                    {mat}
-                  </h4>
-                  <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-1">
-                    Kiln-dried, moisture tested & termite treated for Kenyan climate stability.
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Precision Drill & Screw Specification Callout for this Discipline */}
-        <div className="mt-12 rounded-3xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-[#0D0E12] p-6 sm:p-8 shadow-lg overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-5 relative">
-              <div className="relative h-60 sm:h-72 w-full rounded-2xl overflow-hidden bg-stone-950">
-                <img
-                  src="/portfolio/drill-fastener-workshop.jpg"
-                  alt="Precision Drills and Architectural Screws"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
-                <div className="absolute bottom-3 left-3 right-3 p-3 rounded-xl backdrop-blur-md bg-stone-950/80 border border-white/10 text-white">
-                  <span className="text-[9px] uppercase font-mono text-amber-300 tracking-wider block">
-                    Fastening Standard
-                  </span>
-                  <span className="text-xs font-serif text-stone-100">
-                    High-Torque Drill Rig & Architectural Fasteners
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-7 space-y-4">
-              <div>
-                <span className="text-[10px] uppercase font-mono tracking-widest text-amber-700 dark:text-amber-400 font-semibold block mb-1">
-                  Tooling & Structural Fastening Protocol
-                </span>
-                <h4 className="font-serif text-xl sm:text-2xl text-stone-900 dark:text-stone-100 font-normal">
-                  Engineered Screws & High-Torque Driver Calibration
-                </h4>
-                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-sans leading-relaxed mt-2">
-                  We discard obsolete nails and soft slotted screws. Every joint in this discipline is secured with calibrated brushless cordless drivers, hardened carbide drill bits, and corrosion-resistant Torx architectural screws that eliminate squeaks and structural drift.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800">
-                  <span className="text-[10px] font-mono text-stone-500 uppercase block">
-                    Precision Drill Protocol
-                  </span>
-                  <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 mt-0.5 block">
-                    Carbide Pilot & Stepped Countersink
-                  </span>
-                  <span className="text-[11px] text-stone-500 mt-1 block">
-                    Pre-drilling stops timber fiber fractures in dense hardwood.
-                  </span>
-                </div>
-
-                <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800">
-                  <span className="text-[10px] font-mono text-stone-500 uppercase block">
-                    Fastener Drive Geometry
-                  </span>
-                  <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 mt-0.5 block">
-                    Deep Star Torx & Pocket Framing
-                  </span>
-                  <span className="text-[11px] text-stone-500 mt-1 block">
-                    Zero cam-out slippage with 3x higher clamping force.
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. EXPLORE OTHER 6 DISCIPLINES RIBBON */}
+      {/* 12. EXPLORE OTHER 6 DISCIPLINES RIBBON */}
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -690,7 +952,7 @@ export default function ServiceDetailClient({
         </div>
       </section>
 
-      {/* 8. FINAL CONSULTATION CTA BANNER */}
+      {/* 13. FINAL CONSULTATION CTA BANNER */}
       <section className="py-20 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="rounded-3xl bg-gradient-to-br from-stone-900 via-stone-950 to-stone-900 border border-amber-500/30 p-8 sm:p-14 text-white relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />

@@ -1,13 +1,49 @@
+export interface ServiceWorkflowStep {
+  step: string;
+  title: string;
+  duration: string;
+  description: string;
+  deliverables: string[];
+}
+
+export interface ServiceFAQ {
+  question: string;
+  answer: string;
+}
+
+export interface ServiceTechnicalSpec {
+  fasteningProtocol: string;
+  moistureStandard: string;
+  loadTolerance: string;
+  finishingChemistry: string;
+  acousticRating?: string;
+  maintenanceLife: string;
+}
+
 export interface ServiceItem {
   id: string;
   number: string;
   title: string;
+  tagline: string;
   shortDesc: string;
   description: string;
+  detailedOverview: string[];
   features: string[];
   materialsUsed: string[];
+  technicalSpecs: ServiceTechnicalSpec;
+  workflowSteps: ServiceWorkflowStep[];
+  faqs: ServiceFAQ[];
   typicalTimeline: string;
   image: string;
+  unitName: string;
+  defaultUnitCount: number;
+  baseRatePerUnit: number;
+  clientQuote: {
+    text: string;
+    client: string;
+    location: string;
+    year: string;
+  };
 }
 
 export const MAIN_SERVICES: ServiceItem[] = [
@@ -15,120 +51,750 @@ export const MAIN_SERVICES: ServiceItem[] = [
     id: "staircases",
     number: "01",
     title: "Wooden Staircases",
+    tagline: "Sculptural Vertical Engineering in Solid African Hardwoods",
     shortDesc: "Cantilevered, dog-leg, and solid hardwood staircases with hand-turned balustrades & bullnose treads.",
     description:
       "Transforming vertical circulation into the sculptural centerpiece of the home. We engineer and handcraft bespoke solid hardwood staircases—from cantilevered floating treads anchored to concealed steel spines to grand curving stairwells, closed-riser hardwood flights, and hand-turned baluster assemblies.",
-    features: [
-      "Solid African Mahogany, Teak & Oak bullnose treads",
-      "Hand-turned architectural newel posts & baluster spindles",
-      "Routered non-slip safety grooves and riser flush detailing",
-      "Non-slip satin matte polyurethane protective coats",
+    detailedOverview: [
+      "Staircases are the architectural spine of multi-story residences. Our workshop fabricates each flight by pairing structural timber engineering with artisanal joinery. Whether designing a minimalist cantilevered floating staircase that appears weightless or a grand traditional closed-riser staircase with turned newel posts, every millimeter is cut, planed, and finished in our climate-controlled Nairobi workshop before on-site installation.",
+      "We exclusively mill seasoned African Mahogany (Khaya anthotheca), prime Mvule, and kiln-stabilized American White Oak, dried to 8–11% moisture content to prevent seasonal movement. Each tread features 38mm to 65mm solid wood thickness, routed anti-slip bullnose front edges, and structural mortise-and-tenon or concealed steel-bracket housings.",
+      "Our installation protocol eliminates creaks and structural vibration through polyurethane acoustic bedding and Torx T25 high-tensile structural fasteners. Treads are treated with three coats of non-yellowing, traffic-rated satin polyurethane to endure decades of continuous use.",
     ],
-    materialsUsed: ["African Mahogany", "Mvule Hardwood", "Teak", "American White Oak", "Brass Hardware"],
+    features: [
+      "Solid African Mahogany, Teak & Oak bullnose treads (38mm – 65mm thickness)",
+      "Concealed heavy-gauge steel spine cantilevers with zero deflection",
+      "Hand-turned architectural newel posts, curved volutes & baluster spindles",
+      "Precision routed non-slip safety grooves and riser flush shadow reveals",
+      "Anti-squeak elastomeric bedding under every structural tread bearing point",
+      "Non-slip satin matte polyurethane protective coats with UV-inhibitors",
+    ],
+    materialsUsed: [
+      "African Mahogany (Khaya)",
+      "Mvule Hardwood",
+      "American White Oak",
+      "Grade 8.8 Structural Steel",
+      "Solid Architectural Brass Hardware",
+    ],
+    technicalSpecs: {
+      fasteningProtocol: "Pre-drilled countersunk Torx T25 architectural timber screws with Wurth anchor studs into concrete/steel.",
+      moistureStandard: "Kiln-dried hardwood calibrated to 8% – 11% moisture content with anti-borer boron salt immersion.",
+      loadTolerance: "Tested to 4.2 kN concentrated point load per tread with under 0.8mm dynamic deflection.",
+      finishingChemistry: "3 coats of Bona Traffic HD non-yellowing satin polyurethane; scratch and alcohol resistant.",
+      acousticRating: "Acoustic rubber isolation underlayment yielding sub-35dB footfall transmission.",
+      maintenanceLife: "25+ years structural lifespan; re-coating interval 7–10 years under residential traffic.",
+    },
+    workflowSteps: [
+      {
+        step: "01",
+        title: "3D Laser Site Survey & Load Calculations",
+        duration: "Days 1 – 3",
+        description: "Laser measurement of finished floor heights, wall plumbness, and structural anchorage points. Generation of 3D CAD stair models with rise/run ergonomics.",
+        deliverables: ["Architectural 3D CAD drawings", "Structural anchor schedule", "Rise & run calculation sheet"],
+      },
+      {
+        step: "02",
+        title: "Hardwood Grain Selection & Kiln Stabilization",
+        duration: "Days 4 – 8",
+        description: "Hand-picking prime African Mahogany and Oak baulks with matching grain flow. Kiln stabilization and moisture meter verification.",
+        deliverables: ["Timber batch moisture log", "Sample grain selection approval", "Milling cut list"],
+      },
+      {
+        step: "03",
+        title: "Workshop Jointing, Profiling & Pre-Assembly",
+        duration: "Days 9 – 20",
+        description: "Precision CNC routing of stringers, CNC-machined mortise housings, bullnose tread edge profiling, and full workshop dry-fit assembly.",
+        deliverables: ["Factory dry-fit inspection", "Pre-finished sub-assembly units", "Protective crating"],
+      },
+      {
+        step: "04",
+        title: "On-Site Rigging, Structural Fastening & Leveling",
+        duration: "Days 21 – 27",
+        description: "Anchoring of concealed steel spine or timber carriage stringers, laser-leveling each tread, and securing with high-tensile fasteners and acoustic isolation pads.",
+        deliverables: ["Anchor torque verification", "Deflection testing report", "Zero-creak acoustic check"],
+      },
+      {
+        step: "05",
+        title: "Hand Finishing, Balustrade Fitting & Handover",
+        duration: "Days 28 – 35",
+        description: "Installation of handrails, newel posts, balusters, fine hand sanding to 320 grit, applying final satin polyurethane coats, and handing over with care guide.",
+        deliverables: ["Finished staircase handover", "10-Year Craftsmanship Certificate", "Hardwood maintenance kit"],
+      },
+    ],
+    faqs: [
+      {
+        question: "Can you install floating cantilevered stairs on an existing brick or masonry wall?",
+        answer: "Yes. For existing masonry or concrete block walls, we open localized vertical pockets to anchor a concealed structural steel stringer with chemical anchor bolts (Hilti HIT-HY 200) into reinforced concrete columns or ring beams. The wall is then replastered, leaving only the solid hardwood treads visibly protruding from the wall.",
+      },
+      {
+        question: "What timber species is best suited for staircases in Nairobi's climate?",
+        answer: "African Mahogany (Khaya anthotheca) and seasoned Mvule are our premier choices. Both hardwoods possess dense, stable cellular structures that resist seasonal warping from Nairobi's dry and rainy cycle when kiln-dried to 8–11% equilibrium moisture content.",
+      },
+      {
+        question: "How do you permanently eliminate staircase squeaks?",
+        answer: "Stair squeaks occur when timber treads rub against risers or fasteners. We eliminate this by routing mechanical tongue-and-groove slip joints, placing elastomeric neoprene damping strips between stringers and treads, and fastening exclusively with calibrated Torx architectural screws rather than smooth nails.",
+      },
+      {
+        question: "What is the standard comfortable tread depth and riser height you recommend?",
+        answer: "We adhere strictly to international architectural ergonomics: an ideal riser height between 165mm and 175mm, with a tread going of 260mm to 285mm plus a 25mm bullnose overhang. This formula (2R + G = 600mm–640mm) guarantees safe, natural climbing cadence.",
+      },
+      {
+        question: "How long does a bespoke hardwood staircase take from deposit to handover?",
+        answer: "A standard single-flight staircase takes 3 to 4 weeks; intricate multi-flight dog-leg or curved balustrade projects take 4 to 6 weeks. All manufacturing occurs in our workshop so on-site installation disruption is minimized to just 3 to 5 working days.",
+      },
+    ],
     typicalTimeline: "3 – 6 Weeks",
     image: "/portfolio/project-07.jpg",
+    unitName: "Treads & Landings",
+    defaultUnitCount: 16,
+    baseRatePerUnit: 28000,
+    clientQuote: {
+      text: "The cantilevered mahogany stairs Aura & Noir built in our Karen villa are breathtaking. The treads feel rock-solid with zero vibration, and the hand-finished satin sheen is pure perfection.",
+      client: "Dr. Kenneth M.",
+      location: "Karen, Nairobi",
+      year: "2026",
+    },
   },
   {
     id: "gypsum",
     number: "02",
     title: "Gypsum Designing & Installation",
+    tagline: "Architectural Ceiling Sculpture & Zero-Glare Ambient Illumination",
     shortDesc: "Sculptural drop ceilings, cove LED channels, acoustic bulkheads, and decorative 3D ceiling medallions.",
     description:
       "Ceilings are the fifth wall of luxury architecture. Our master gypsum artisans craft multi-tier bulkheads, radius curved light wells, suspended honeycomb pods, flush shadow lines, and acoustic baffle ceilings that wash spaces in soft, zero-glare ambient luminance.",
-    features: [
-      "Curved & geometric multi-level drop ceilings & light wells",
-      "Recessed architectural LED cove & halo light channels",
-      "Acoustic sound-dampening insulation backing & moisture-resistant boards",
-      "Seamless skimmed micro-finishes and clean corner bead lines",
+    detailedOverview: [
+      "A thoughtfully sculpted ceiling defines room zones, conceals air-conditioning ducts and wiring, and controls the emotional temperature of an interior. We move far beyond flat boards by treating ceilings as monumental kinetic sculptures—crafting recessed light coves, floating geometric bulkheads, radius curved soffits, and acoustic coffers.",
+      "We build our structural frames using heavy-gauge (0.50mm+) galvanized steel stud framing, anchored at 400mm centers with zinc-plated drywall screws to avoid the sagging common in standard installations. Every board is premium moisture-resistant (green core) gypsum, reinforced at every seam with fiberglass mesh tape and three coats of skimmed joint compound.",
+      "Lighting is seamlessly integrated. We cast precision extruded aluminum channels with opal diffusers directly into perimeter shadow reveals, ensuring linear LED strips cast an unbroken, spotless halo of 2700K or 3000K architectural light across adjacent walls.",
     ],
-    materialsUsed: ["Moisture-Resistant Gypsum", "Galvanized Steel Studs", "Venetian Plaster", "Warm Dimmable LED"],
+    features: [
+      "Curved & geometric multi-level drop ceilings with laser-aligned perimeter reveals",
+      "Recessed architectural LED cove channels with high-CRI flicker-free illumination",
+      "Moisture-resistant green gypsum boards for longevity in humid ambient climates",
+      "0.50mm heavy-gauge galvanized steel frame structure anchored at 400mm centers",
+      "Acoustic fiberglass batt insulation backing for superior sound isolation",
+      "Flawless ultra-flat skim coating sanded to level 5 architectural finish",
+    ],
+    materialsUsed: [
+      "Moisture-Resistant Gypsum (Knauf/Gyproc)",
+      "Galvanized Steel Studs & Channels (0.50mm+)",
+      "Extruded Aluminum LED Profiles with Opal Diffusers",
+      "Fiberglass Joint Scrim Tape",
+      "Dulux Professional Vinyl Matt Plaster Primer",
+    ],
+    technicalSpecs: {
+      fasteningProtocol: "Fine-thread black phosphate bugle-head screws spaced every 200mm on metal framing.",
+      moistureStandard: "Grade-A moisture-resistant core panels with fungal-resistant backing.",
+      loadTolerance: "Framework rated to support 25kg/m² overhead dead load for chandeliers and recessed HVAC.",
+      finishingChemistry: "Level 5 skim finish with low-VOC sandable polymer joint compound and anti-microbial primer.",
+      acousticRating: "Reduces airborne room reverberation by NRC 0.65 when backed with glasswool batts.",
+      maintenanceLife: "20+ years crack-free performance with structural expansion shadow reveals.",
+    },
+    workflowSteps: [
+      {
+        step: "01",
+        title: "Ceiling Reflected Light & Mechanical Plan",
+        duration: "Days 1 – 2",
+        description: "Creation of Reflected Ceiling Plans (RCP) aligning AC grilles, recessed spotlights, chandelier junction boxes, and perimeter LED coves.",
+        deliverables: ["2D Reflected Ceiling Plan", "Electrical load & conduit schedule", "Drop bulkhead height sections"],
+      },
+      {
+        step: "02",
+        title: "Laser Grid Elevation & Steel Framework",
+        duration: "Days 3 – 7",
+        description: "Setting perimeter datum lines using 360-degree rotary lasers. Installation of galvanized main runners, cross channels, and perimeter wall tracks.",
+        deliverables: ["Laser level verification", "Framing structural inspection", "Drop-wire anchor pull check"],
+      },
+      {
+        step: "03",
+        title: "Boarding, Radius Sculpting & Conduit Routing",
+        duration: "Days 8 – 14",
+        description: "Fitting 12.5mm moisture-resistant gypsum boards with staggered joints, curving radius bulkheads, and cutting luminaire apertures.",
+        deliverables: ["Board seam alignment check", "Conduit integrity testing", "Spotlight cutout inspection"],
+      },
+      {
+        step: "04",
+        title: "Joint Taping, Bead Setting & Level 5 Skimming",
+        duration: "Days 15 – 20",
+        description: "Setting galvanized metal corner beads, embedding fiberglass joint tape with three coats of compound, and fine feathering edges.",
+        deliverables: ["Corner bead straightness check", "3-coat feathering inspection", "Smoothness touch inspection"],
+      },
+      {
+        step: "05",
+        title: "Dustless Sanding, Prime Coating & LED Fitting",
+        duration: "Days 21 – 25",
+        description: "Orbital vacuum sanding, application of deep penetrating primer, 2 coats of vinyl matt ceiling paint, and commissioning LED channels.",
+        deliverables: ["Illumination uniformity test", "Flawless matte ceiling handover", "5-Year Crack-Free Guarantee"],
+      },
+    ],
+    faqs: [
+      {
+        question: "How do you guarantee that gypsum ceiling joints won't develop hairline cracks over time?",
+        answer: "Cracking in gypsum ceilings is caused by building settlement and structural thermal movement. We prevent cracks through three techniques: 1) Using heavy 0.50mm galvanized steel studs that do not flex under weight; 2) Installing flexible shadow gap channels at wall perimeters so the ceiling floats independently from wall vibrations; and 3) Embedding cross-fiber joint tape with high-flexibility polymer joint compounds.",
+      },
+      {
+        question: "Can gypsum ceilings support heavy chandeliers or pendant lighting?",
+        answer: "Yes, but never from the gypsum board itself. During our framing phase, we install reinforced structural timber or steel pattresses anchored directly into the structural concrete slab above to support fixtures up to 60kg safely.",
+      },
+      {
+        question: "Do you install gypsum ceilings in bathrooms and kitchens?",
+        answer: "Yes. In all wet or humid zones, we use certified green-core moisture-resistant gypsum boards, silicone-sealed perimeter perimeters, and anti-fungal acrylic moisture-barrier paints that resist steam and condensation.",
+      },
+      {
+        question: "How much ceiling height will I lose with a false gypsum drop ceiling?",
+        answer: "A minimal single-tier perimeter cove drop requires only 100mm to 120mm of depth—just enough to house slim LED aluminum profiles and downlight heat sinks while maintaining the full original ceiling height in the center of the room.",
+      },
+      {
+        question: "What LED color temperature do you recommend for residential ceilings?",
+        answer: "We recommend 2700K (warm incandescent tone) for master bedrooms, lounges, and dining areas to create cozy, flattering ambiance. For kitchens, wardrobes, and home offices, we recommend 3000K (warm white) for crisp visual clarity.",
+      },
+    ],
     typicalTimeline: "2 – 4 Weeks",
     image: "/portfolio/project-29.jpg",
+    unitName: "Square Meters (m²)",
+    defaultUnitCount: 65,
+    baseRatePerUnit: 3800,
+    clientQuote: {
+      text: "The sculptural ceiling Aura & Noir created in our Muthaiga lounge completely transformed the room. The perimeter light well makes the space feel twice as high and impossibly luxurious.",
+      client: "Arch. Brian O.",
+      location: "Muthaiga, Nairobi",
+      year: "2026",
+    },
   },
   {
     id: "flooring",
     number: "03",
     title: "Wooden Flooring",
+    tagline: "Solid Mahogany Parquet, Chevron Patterns & Dustless Restoration",
     shortDesc: "Solid mahogany herringbone parquet, chevron, woodblocks, and dustless sand-and-seal restoration.",
     description:
       "Authentic tactile warmth underfoot. We supply, precision-mill, and install bespoke hardwood flooring patterns including classic Herringbone, basketweave parquet, wide-plank oak, and restore aged heritage parquet through dustless sanding and high-durability polyurethane sealing.",
-    features: [
-      "Precision tongue-and-groove parquet woodblock laying",
-      "Herringbone, chevron & basketweave geometric patterns",
-      "Acoustic underlayment & moisture membrane barriers",
-      "Dustless sanding, staining & hard-wearing polyurethane sealing",
+    detailedOverview: [
+      "Natural hardwood flooring is the most enduring flooring material known to architecture. Unlike printed laminates or cold ceramic tiles, authentic solid wood blocks age with grace, can be re-sanded multiple times across generations, and introduce organic acoustic dampening to high-end residential interiors.",
+      "We source sustainably harvested African Mahogany, Teak, and White Oak, precision milled with microscopic tongue-and-groove tolerances. We acclimate the timber woodblocks inside your residence for 7 to 10 days before laying to match the internal ambient humidity of Nairobi, eliminating gaps and cupping.",
+      "Our flooring is adhered directly to screeded substrates using high-elasticity silane polymer adhesives that flex with micro-movements of the subfloor. After laying, floors undergo a 4-grit dustless sanding progression and are sealed with multi-coat industrial polyurethane or natural hardwax oils.",
     ],
-    materialsUsed: ["Solid Mahogany Woodblocks", "European Oak", "African Hardwoods", "Polyurethane Sealant"],
+    features: [
+      "Precision milled tongue-and-groove solid mahogany woodblocks (20mm thickness)",
+      "Classic geometric patterns: Herringbone, Double Herringbone, Chevron, Basketweave",
+      "Heavy-duty silane polymer elastomeric adhesive installation with moisture barrier",
+      "Dustless 4-grit sanding protocol capturing 99.8% of fine airborne wood particles",
+      "Choice of deep wood stains from warm golden cognac to rich smoked espresso",
+      "Bona commercial-grade polyurethane finish available in matte, satin, or high gloss",
+    ],
+    materialsUsed: [
+      "Solid African Mahogany Woodblocks (20mm)",
+      "European White Oak Planks",
+      "SikaBond Silane-Modified Elastic Adhesive",
+      "Epoxy Moisture Barrier Membrane (Sika Primer)",
+      "Bona Traffic HD Low-VOC Polyurethane",
+    ],
+    technicalSpecs: {
+      fasteningProtocol: "Full-trowel silane polymer elastomeric adhesive bonded to moisture-tested screed.",
+      moistureStandard: "Hardwood conditioned to 9% – 12% moisture; subfloor screed moisture verified under 2.5% CM.",
+      loadTolerance: "Endures heavy residential and commercial footfall; Janka hardness rating 1,400+ lbf.",
+      finishingChemistry: "Four-coat Swedish polyurethane system with aluminum oxide abrasion resistance.",
+      acousticRating: "Eliminates hollow clatter; absorbs 18dB of impact sound with elastic bonding.",
+      maintenanceLife: "30+ years lifespan; can be completely re-sanded and refinished 5 to 7 times.",
+    },
+    workflowSteps: [
+      {
+        step: "01",
+        title: "Subfloor Moisture & Flatness Assessment",
+        duration: "Days 1 – 3",
+        description: "Calcium carbide moisture testing of concrete screed, checking flatness tolerances within ±2mm across a 2-meter straight edge.",
+        deliverables: ["Subfloor moisture report", "Floor flatness survey", "Substrate preparation plan"],
+      },
+      {
+        step: "02",
+        title: "Epoxy Vapor Barrier & Wood Acclimatization",
+        duration: "Days 4 – 10",
+        description: "Application of 2-part epoxy moisture barrier membrane. Delivery of woodblocks to site for in-room moisture acclimatization.",
+        deliverables: ["Moisture barrier thickness test", "Timber equilibrium log", "Pattern layout centering lines"],
+      },
+      {
+        step: "03",
+        title: "Artisanal Parquet Laying & Border Inlay",
+        duration: "Days 11 – 18",
+        description: "Troweling silane adhesive and laying herringbone or chevron woodblocks with expansion gaps at walls and custom perimeter border banding.",
+        deliverables: ["Pattern symmetry inspection", "Joint tightness verification", "Expansion gap clearance check"],
+      },
+      {
+        step: "04",
+        title: "Dustless Sanding Progression (40 to 120 Grit)",
+        duration: "Days 19 – 22",
+        description: "Operating heavy planetary drum sanders connected to HEPA vacuum extractors across 4 grits to achieve glass-like uniformity.",
+        deliverables: ["Sanding flatness inspection", "Edge sanding inspection", "Wood filler color match check"],
+      },
+      {
+        step: "05",
+        title: "Custom Staining, Sealing & Skirting Handover",
+        duration: "Days 23 – 28",
+        description: "Application of penetrating wood stain, 1 coat of primer, 3 coats of traffic polyurethane, and installing matching hardwood skirting boards.",
+        deliverables: ["Gloss/matte sheen test", "Handover care instructions", "Bona cleaning mop & kit"],
+      },
+    ],
+    faqs: [
+      {
+        question: "Can solid hardwood parquet be installed over existing ceramic floor tiles?",
+        answer: "Yes, provided the existing tiles are firmly bonded, level, and free of moisture. We diamond-grind the tile glaze to create mechanical keying, apply a high-tack polyurethane bonding primer, and adhere the parquet directly using elastic silane adhesive without damaging the underlying structure.",
+      },
+      {
+        question: "What is the difference between Herringbone and Chevron parquet?",
+        answer: "In a Herringbone pattern, rectangular wood blocks are laid perpendicular to one another at 90-degree angles, creating a staggered zigzag. In a Chevron pattern, the block ends are precision cut at a 45-degree angle so the joints meet in a sharp, continuous V-shaped point down the room's axis.",
+      },
+      {
+        question: "How do you protect wooden flooring against Kenya's high humidity and termites?",
+        answer: "All our raw hardwood blocks undergo pressure-chamber immersion in boron-based anti-fungal and anti-termite salts. Furthermore, an epoxy vapor membrane beneath the adhesive isolates the timber from concrete slab dampness.",
+      },
+      {
+        question: "How do you clean and maintain real hardwood floors daily?",
+        answer: "Hardwood floors should be swept or vacuumed with a soft bristle attachment. For damp cleaning, use a microfiber spray mop lightly misted with a pH-neutral wood floor cleaner. Never use wet bucket mops, harsh bleach, or steam cleaners.",
+      },
+      {
+        question: "Can aged, scratched parquet floors be restored rather than replaced?",
+        answer: "Absolutely. Our dustless restoration service sands off aged yellowed varnish and surface scratches, repairs broken woodblocks, fills open seams with timber dust resin, and applies three fresh coats of commercial polyurethane, returning the floor to brand-new condition.",
+      },
+    ],
     typicalTimeline: "2 – 5 Weeks",
     image: "/portfolio/project-14.jpg",
+    unitName: "Square Meters (m²)",
+    defaultUnitCount: 80,
+    baseRatePerUnit: 5500,
+    clientQuote: {
+      text: "The mahogany herringbone parquet in our Runda home is an absolute work of art. The joints are microscopic, the satin polyurethane finish is silken to walk on barefoot, and there was zero dust during sanding.",
+      client: "Sarah & David K.",
+      location: "Runda Water, Nairobi",
+      year: "2026",
+    },
   },
   {
     id: "cabinetry",
     number: "04",
     title: "Kitchen Cabinets & Wardrobes",
+    tagline: "Millimeter-Precision Culinary Suites & Walk-In Wardrobe Dressing Rooms",
     shortDesc: "Bespoke culinary cabinetry, walk-in dressing suites, and custom organizer joinery.",
     description:
       "Custom storage engineered to millimeter precision. We design handleless contemporary kitchens with granite & quartz countertops, alongside luxury floor-to-ceiling walk-in wardrobes featuring integrated TV alcoves, open display towers, and soft-close German hardware.",
-    features: [
-      "Floor-to-ceiling built-in wardrobes with integrated TV alcoves",
-      "Shaker-style and modern handleless push-touch kitchen cabinetry",
-      "German soft-close hinges & heavy-duty ball-bearing drawer runners",
-      "Polished granite & quartz countertops with undermount sink cutouts",
+    detailedOverview: [
+      "Fine millwork defines the practical heartbeat of the home. A luxury kitchen or master wardrobe suite demands uncompromising hardware durability, ergonomic spatial flow, and flawless edge-banding that withstands everyday steam, heat, and heavy dynamic loading.",
+      "We build our cabinet carcasses from 18mm high-density, moisture-resistant marine boards and European melamine, edge-banded with 2mm impact-resistant ABS using polyurethane hot-melt glue that repels moisture. Door fronts are available in real American Oak veneers, high-gloss UV lacquer, or timeless five-piece Shaker hardwood profiles.",
+      "Every hinge, drawer slide, and pullout mechanism is 100% genuine Austrian Blum (Tandembox / Legrabox / Clip Top Blumotion) or German Hettich, tested for 200,000 opening cycles. We incorporate concealed LED wardrobe sensor lighting, soft-close cutlery organizers, magic corner pullouts, and heavy-gauge granite/quartz fabrication.",
     ],
-    materialsUsed: ["Selected Teak & Oak Veneer", "Moisture-Resistant MDF", "Black Granite", "Matte Black Pulls"],
+    features: [
+      "18mm high-density moisture-resistant marine carcass with 2mm PUR edge-banding",
+      "Authentic Austrian Blum soft-close hinges & full-extension concealed drawer runners",
+      "Bespoke door finishes: 5-piece Shaker hardwood, fluted wood, or handleless J-pulls",
+      "Integrated wardrobe accessories: jewelry drawers, shoe racks, pull-down clothes rails",
+      "Solid quartz & granite countertops with polished undermount sink cutouts & drainers",
+      "Concealed LED strip illumination with micro-recessed proximity door switches",
+    ],
+    materialsUsed: [
+      "Moisture-Resistant Marine Plywood & HMR Board",
+      "Natural Teak & White Oak Veneers",
+      "Blum Legrabox / Tandembox Soft-Close Runners",
+      "Black Galaxy Granite & Calacatta Quartz Countertops",
+      "Matte Black & Brushed Brass Architectural Pulls",
+    ],
+    technicalSpecs: {
+      fasteningProtocol: "Concealed 35mm pocket screw joinery with 8mm dowel doweling and Hafele Minifix cam fasteners.",
+      moistureStandard: "Grade V313 moisture-resistant core panels with zero edge swell under ambient humidity.",
+      loadTolerance: "Drawer slides rated for 40kg to 70kg dynamic load capacity with zero sag at full extension.",
+      finishingChemistry: "Multi-stage polyurethane paint with non-yellowing aliphatic hardeners; anti-fingerprint matte.",
+      acousticRating: "Integrated hydraulic damping cushions door closure to below 20dB whisper quiet.",
+      maintenanceLife: "25+ years cabinet carcass integrity; lifetime warranty on Blum moving hardware.",
+    },
+    workflowSteps: [
+      {
+        step: "01",
+        title: "Ergonomic Workflow Survey & 3D CAD Renderings",
+        duration: "Days 1 – 4",
+        description: "Laser measurement of wall openings and plumbing/gas outlets. Drafting 3D photorealistic cabinet models illustrating appliance zones and cutlery trays.",
+        deliverables: ["3D CAD photorealistic renders", "Appliance MEP coordination plan", "Hardware specification sheet"],
+      },
+      {
+        step: "02",
+        title: "Panel Sizing, PUR Edge-Banding & CNC Milling",
+        duration: "Days 5 – 12",
+        description: "Industrial sliding panel saw sizing, 2mm PUR waterproof edge-banding, and CNC drilling of system-32 hinge and shelf holes.",
+        deliverables: ["Cut list verification", "Edge-banding water seal inspection", "System-32 bore alignment check"],
+      },
+      {
+        step: "03",
+        title: "Workshop Carcass Assembly & Hardware Dry-Fit",
+        duration: "Days 13 – 20",
+        description: "Squaring and doweling carcasses, mounting Blum runners, fitting drawer boxes, and verifying soft-close alignment prior to transit.",
+        deliverables: ["Factory carcass squareness check", "Drawer motion alignment inspection", "Protective packing"],
+      },
+      {
+        step: "04",
+        title: "On-Site Cabinet Leveling & Stone Template",
+        duration: "Days 21 – 27",
+        description: "Mounting modular base and wall cabinets using laser levels and heavy-duty adjustable cabinet hanging brackets. Creating stone countertop templates.",
+        deliverables: ["Cabinet plumb & level check", "Laser plumb inspection sheet", "Countertop template sign-off"],
+      },
+      {
+        step: "05",
+        title: "Countertop Fitting, Door Fine-Tuning & Handover",
+        duration: "Days 28 – 35",
+        description: "Installing quartz/granite worktops, fine-tuning 3D door hinge gaps to ±0.5mm, connecting LED lighting sensors, and cleaning interior drawers.",
+        deliverables: ["Countertop seam inspection", "Door gap calibration report", "Hardware lifetime warranty card"],
+      },
+    ],
+    faqs: [
+      {
+        question: "How do you guarantee that kitchen base cabinets won't swell from sink water leaks?",
+        answer: "We fabricate the entire under-sink cabinet carcass from 18mm 100% boiling-water-proof (BWP) marine plywood, lined with an embossed aluminum drip tray that catches accidental plumbing seepage. Every exposed board edge is sealed with polyurethane (PUR) hot-melt adhesive that forms an impenetrable waterproof bond.",
+      },
+      {
+        question: "What hardware brands do you install for hinges and drawer runners?",
+        answer: "We install authentic Austrian Blum (Blumotion soft-close) and German Hettich systems. Every drawer slide is a full-extension, synchronized concealed runner rated for 50kg to 70kg of dynamic load and backed by a lifetime mechanical warranty.",
+      },
+      {
+        question: "Can you build floor-to-ceiling wardrobes without doors bending or warping?",
+        answer: "Yes. For doors exceeding 2.2 meters in height, we embed concealed Italian Omge tensioner straightening rods inside the door panels. These adjustable steel rods counteract seasonal wood tension, ensuring doors remain perfectly flat and planar year-round.",
+      },
+      {
+        question: "Do you supply and fabricate the granite or quartz countertops as well?",
+        answer: "Yes, our service is completely turnkey. We measure, cut, edge-profile, and polish quartz or granite slabs in-house, complete with undermount sink cutouts, recessed drainage runnels, and 45-degree mitered waterfall end panels.",
+      },
+      {
+        question: "What internal organizers can be included in the kitchen and wardrobe layout?",
+        answer: "Everything is customized: spice pullout racks, tandem pantries, Blum Orgaline cutlery dividers, soft-closing corner carousels, integrated pull-out trash bins, illuminated glass watch/jewelry drawers, and pull-down wardrobe wardrobe lifts.",
+      },
+    ],
     typicalTimeline: "3 – 6 Weeks",
     image: "/portfolio/project-27.jpg",
+    unitName: "Linear Feet of Cabinetry",
+    defaultUnitCount: 22,
+    baseRatePerUnit: 32000,
+    clientQuote: {
+      text: "The bespoke shaker kitchen Aura & Noir crafted for us in Kitisuru is world-class. The Blum soft-close motion is effortless, the quartz waterfall island is striking, and storage was maximized down to the millimeter.",
+      client: "Cynthia W.",
+      location: "Kitisuru, Nairobi",
+      year: "2026",
+    },
   },
   {
     id: "tv_stands",
     number: "05",
     title: "TV Stands & Media Walls",
+    tagline: "Cantilevered Floating Consoles, Fluted Timber & Calacatta Marble Panels",
     shortDesc: "Custom floating TV consoles, fluted acoustic feature walls, and marble AV entertainment centers.",
     description:
       "Elevate your entertainment haven into a refined gallery installation. We fabricate wall-hung floating consoles with mitered edges, integrated acoustic slatted paneling, Calacatta marble slab accents, concealed cable trunking, and halo perimeter LED backlighting.",
-    features: [
-      "Floating cantilevered consoles with concealed wire management",
-      "Vertical fluted acoustic wood slat feature backdrops",
-      "Calacatta marble and backlit porcelain accent panels",
-      "Backlit halo perimeter LEDs with dimming controls",
+    detailedOverview: [
+      "The modern entertainment wall is the focal centerpiece of living rooms and private executive lounges. Rather than settling for flimsy freestanding store-bought credenzas with visible tangled cables, our workshop engineers bespoke architectural media walls that integrate seamless sound dampening, cable concealment, and museum-grade finishes.",
+      "We design custom backdrops combining 3D vertical acoustic timber slats (fluted oak or blackened walnut) set against large-format sintered porcelain stone slabs such as Calacatta Gold or Nero Marquina. The console itself is cantilevered and floating, anchored to structural walls with heavy steel brackets capable of supporting heavy AV receivers and soundbars without bowing.",
+      "Behind the scenes, we install dedicated high-diameter PVC conduit chases inside the wall so HDMI, optical, and power cables route invisibly between wall-mounted screens and hidden console drawers with remote-transmitting IR repeater glass doors.",
     ],
-    materialsUsed: ["Acoustic Timber Slats", "Calacatta Porcelain Slabs", "High-Gloss Lacquer", "Warm LED Channels"],
+    features: [
+      "Cantilevered floating TV consoles with 45-degree mitered seamless edge joinery",
+      "Full-height acoustic fluted timber slat feature walls with sound-absorbing backing",
+      "Large-format Calacatta gold porcelain slab or sintered marble backing panels",
+      "Concealed in-wall cabling chases ensuring zero visible power or HDMI wires",
+      "Indirect perimeter halo LED channels with wireless touch-dimming controllers",
+      "Drop-down acoustic fabric or tinted reeded glass doors for AV amplifier ventilation",
+    ],
+    materialsUsed: [
+      "Acoustic Timber Slats (Oak / Walnut / Teak)",
+      "Large-Format Sintered Porcelain Marble Slabs",
+      "Satin Polyurethane Finished MDF",
+      "Heavy-Duty Concealed Steel Cantilever Brackets",
+      "Dimmable 2700K Architectural LED Strips with Opal Diffusers",
+    ],
+    technicalSpecs: {
+      fasteningProtocol: "Heavy-duty steel cleat bars secured with M10 expansion anchors into reinforced wall structure.",
+      moistureStandard: "Kiln-dried timber slats (10% moisture) anchored to acoustic sound felt backing.",
+      loadTolerance: "Floating console tested to support 150kg distributed load with zero forward tilt.",
+      finishingChemistry: "Four-coat lacquer finish; scratch-resistant polyurethane on top console surfaces.",
+      acousticRating: "Reduces room flutter echo; NRC 0.70 rating through slatted timber diffusers.",
+      maintenanceLife: "20+ years lifespan; clean with dry microfiber and stone-safe spray.",
+    },
+    workflowSteps: [
+      {
+        step: "01",
+        title: "Screen Geometry & AV Equipment Layout Plan",
+        duration: "Days 1 – 2",
+        description: "Checking TV diagonal dimensions, soundbar mounting positions, gaming console depths, and calculating sightline angles.",
+        deliverables: ["2D elevation drawings", "Concealed cable routing schematic", "Appliance dimension matrix"],
+      },
+      {
+        step: "02",
+        title: "Concealed In-Wall Conduit & Power Rough-In",
+        duration: "Days 3 – 5",
+        description: "Chasing 50mm diameter PVC conduit lines into the wall between the screen location and console interior; relocating power sockets.",
+        deliverables: ["Conduit clearance test", "Power socket relocation check", "Wall structural anchor verification"],
+      },
+      {
+        step: "03",
+        title: "Workshop Slat Milling & Floating Console Joinery",
+        duration: "Days 6 – 12",
+        description: "Precision milling acoustic wood slats, assembling floating cabinet box with 45-degree mitered joints, and installing drop-down hinges.",
+        deliverables: ["Miter joint tightness inspection", "Slat alignment verification", "Dry-fit test in workshop"],
+      },
+      {
+        step: "04",
+        title: "Stone Slab Mounting & Slat Panel Installation",
+        duration: "Days 13 – 17",
+        description: "Mounting sintered stone or marble backing panel with mechanical clips and polymer adhesive; securing vertical acoustic timber panels.",
+        deliverables: ["Stone seam polish inspection", "Vertical slat laser alignment", "LED cove profile mounting"],
+      },
+      {
+        step: "05",
+        title: "Console Hanging, TV Bracket Mount & Cable Commissioning",
+        duration: "Days 18 – 21",
+        description: "Securing floating console onto heavy steel cleat, mounting TV bracket, fishing all cables through the internal conduit, and testing LEDs.",
+        deliverables: ["Load test on console", "Zero visible cable sign-off", "Lighting and media wall handover"],
+      },
+    ],
+    faqs: [
+      {
+        question: "Can a floating console safely hold heavy AV equipment without tearing off the wall?",
+        answer: "Yes. We anchor our floating consoles using solid 6mm thick cold-rolled steel French cleat brackets bolted directly into concrete or reinforced masonry using M10 Fischer/Hilti anchors. Each console is tested to support over 150kg—more than enough for heavy amplifiers, subwoofers, and decorative marble pieces.",
+      },
+      {
+        question: "How do you hide the messy cables between the wall-hung TV and the console?",
+        answer: "We chase a wide 50mm smooth-bore PVC conduit inside the wall before installing the decorative feature panel. This allows all HDMI, power, and audio cables to drop invisibly through the wall into the back of the console, with plenty of room to pull new cables in the future.",
+      },
+      {
+        question: "Will the TV stand's acoustic slats improve the sound of our soundbar or home theater?",
+        answer: "Significantly. Large open living rooms often suffer from sound reverberation off hard floors and glass windows. The vertical timber slats break up sound waves while the dark acoustic felt backing absorbs high-frequency flutter echo, yielding noticeably crisper dialogue and richer acoustics.",
+      },
+      {
+        question: "What stone or marble options are available for the media wall backdrop?",
+        answer: "We fabricate backdrops using sintered stone slabs (Dekton / Neolith) or porcelain stoneware slabs mimicking Calacatta Gold, Laurent Black, or Statuario marble. These slabs offer the dramatic veining of natural marble but are lightweight, scratch-proof, and heat-resistant.",
+      },
+      {
+        question: "Can game consoles (PS5, Xbox) function inside closed console drawers without overheating?",
+        answer: "Yes. For media compartments housing electronics, we incorporate concealed rear ventilation grills, silent USB-powered extraction fans, and acoustically transparent or tinted reeded glass doors that allow remote control IR signals to pass through.",
+      },
+    ],
     typicalTimeline: "2 – 3 Weeks",
     image: "/portfolio/project-34.jpg",
+    unitName: "Linear Feet of Media Wall",
+    defaultUnitCount: 12,
+    baseRatePerUnit: 18000,
+    clientQuote: {
+      text: "Our entertainment wall in Muthaiga with the fluted walnut slats and backlit porcelain marble has become the showstopper of our house. Not a single wire is visible anywhere.",
+      client: "Marcus & Joyce T.",
+      location: "Muthaiga, Nairobi",
+      year: "2026",
+    },
   },
   {
     id: "doors",
     number: "06",
     title: "Door & Frame Fitting",
+    tagline: "Monumental Pivot Doors, Hardwood Frames & Acoustic Sound Jambs",
     shortDesc: "Solid hardwood entrance doors, precision-milled door jambs, and acoustic frame fitting.",
     description:
       "First impressions and seamless transitions. We custom-fabricate monumental double entrance doors in solid African mahogany, multi-panel internal doors, hand-carved feature casements, and precision-milled door jambs engineered to reduce sound transmission.",
-    features: [
-      "Solid mahogany 10-panel double entrance doors",
-      "Precision-milled hardwood door frames & architrave bundles",
-      "Hand-carved architectural relief frames & casements",
-      "Multi-point security locks and heavy-duty architectural hinges",
+    detailedOverview: [
+      "The entrance door is the definitive tactile handshake of your home. A hollow, lightweight door that rattles in the wind devalues an otherwise prestigious architectural build. Our workshop specializes in monumental, heavy-core solid hardwood doors and pivoting grand entrance portals engineered to make an indelible statement.",
+      "We handcraft doors from solid 50mm to 65mm thick seasoned African Mahogany, Mvule, and Teak, engineered with internal stabilizing cores to resist seasonal warping under Nairobi's alternating rainfall and sunshine. Frame jambs are custom milled to the exact thickness of your structural walls, eliminating ugly gaps and sloppy filler strips.",
+      "Hardware includes German FritsJurgens concealed 360-degree pivot hinges with hydraulic soft-close, multi-point mortise security locks, drop-down acoustic automatic door seals, and custom full-height architectural pull handles in brushed brass or matte blackened steel.",
     ],
-    materialsUsed: ["Solid African Mahogany", "Mvule Hardwood", "Machined Timber Jambs", "Architectural Brass"],
+    features: [
+      "Solid 50mm–65mm thick seasoned African Mahogany & Teak construction",
+      "German FritsJurgens concealed pivot systems supporting up to 500kg doors",
+      "Custom-milled hardwood door frames, matching architraves & acoustic jamb seals",
+      "Multi-point European mortise security locks with anti-drill cylinder guards",
+      "Integrated drop-down mechanical bottom seals to eliminate drafts and sound leaks",
+      "Weather-rated exterior polyurethane with UV blockers and marine oil sealants",
+    ],
+    materialsUsed: [
+      "Solid African Mahogany (Khaya)",
+      "Mvule Hardwood",
+      "FritsJurgens System M+ Hydraulic Pivot",
+      "Architectural Brass & Stainless Steel Pulls",
+      "Sikkens Cetol Marine Weather Coating",
+    ],
+    technicalSpecs: {
+      fasteningProtocol: "Frame secured with countersunk steel sleeve anchors and expanding structural PU foam.",
+      moistureStandard: "Kiln-dried hardwood stabilized at 9% – 11% moisture to prevent door bind.",
+      loadTolerance: "Heavy-duty commercial hinges rated for 160kg; pivot systems rated up to 500kg.",
+      finishingChemistry: "Four coats of exterior micro-porous polyurethane allowing timber breathability.",
+      acousticRating: "Acoustic perimeter seals and solid core provide STC 36 sound isolation.",
+      maintenanceLife: "Lifetime structural timber warranty; re-oiling exterior surfaces every 3–4 years.",
+    },
+    workflowSteps: [
+      {
+        step: "01",
+        title: "Rough Opening Laser Survey & Pivot Axle Engineering",
+        duration: "Days 1 – 2",
+        description: "Checking opening plumb, floor levelness, and structural header support for heavy pivot bearing loads.",
+        deliverables: ["Opening plumb & square report", "Pivot axle calculation sheet", "Door elevation shop drawings"],
+      },
+      {
+        step: "02",
+        title: "Hardwood Timber Acclimatization & Mortise Joinery",
+        duration: "Days 3 – 8",
+        description: "Selecting quarter-sawn African Mahogany stiles and rails, routing mortise-and-tenon joints, and assembling internal stabilizing core.",
+        deliverables: ["Timber moisture testing log", "Stile & rail joint inspection", "Core lamination bond check"],
+      },
+      {
+        step: "03",
+        title: "Precision Sizing, Hardware Routing & Sanding",
+        duration: "Days 9 – 16",
+        description: "CNC routing mortise lock pockets, pivot hinge floor-box housings, flush architectural pull handles, and multi-stage sanding to 320 grit.",
+        deliverables: ["Hardware pocket tolerance check", "Surface smoothness inspection", "Hinges and lock dry-fit"],
+      },
+      {
+        step: "04",
+        title: "Weather Sealing & Multi-Coat Polyurethane Finishing",
+        duration: "Days 17 – 22",
+        description: "Applying deep penetrating anti-fungal preservative, followed by 4 coats of marine-grade polyurethane with UV absorption additives.",
+        deliverables: ["Coating thickness inspection", "Water bead resistance check", "Protective padded crating"],
+      },
+      {
+        step: "05",
+        title: "On-Site Frame Anchoring, Hanging & Lock Commissioning",
+        duration: "Days 23 – 28",
+        description: "Anchoring heavy hardwood frame, hanging door onto pivot axle, adjusting closing speeds, installing perimeter acoustic seals, and handover.",
+        deliverables: ["Smooth closing cadence test", "Perimeter draft & light seal check", "Master keys and warranty handover"],
+      },
+    ],
+    faqs: [
+      {
+        question: "Can large pivot doors be completely sealed against rain and wind drafts?",
+        answer: "Yes. While standard pivot doors often suffer from air gaps, our pivot doors feature custom perimeter rebates with German Q-Lon compression gaskets on the sides and top, combined with an automatic mechanical drop seal recessed into the bottom of the door that drops flush against the threshold when closed.",
+      },
+      {
+        question: "How do you ensure a heavy 2.8-meter high solid wood entrance door won't sag?",
+        answer: "We avoid traditional side-hung hinges on large doors. Instead, we install FritsJurgens floor-to-ceiling concealed pivot mechanisms. The entire weight rests directly on a floor bearing embedded in the concrete slab rather than hanging from the wall frame, preventing sagging for life.",
+      },
+      {
+        question: "What wood species do you recommend for an exterior entrance exposed to rain and sun?",
+        answer: "Seasoned Mvule and African Mahogany are our top recommendations for external doors. Both contain natural oils and dense silica that make them naturally resistant to moisture rot, termites, and intense equatorial UV exposure.",
+      },
+      {
+        question: "Do you supply the matching door frames and architraves as part of the package?",
+        answer: "Yes, every door order includes custom-milled solid hardwood door jambs and matching architrave trims, milled to the exact thickness of your plastered or tiled walls for a seamless flush finish.",
+      },
+      {
+        question: "What security locking systems do you recommend for main entrance doors?",
+        answer: "We install multi-point European security mortise locks that engage three separate hardened steel deadbolts at the top, center, and bottom of the door simultaneously with a single turn of the key, paired with anti-drill, anti-bump Euro cylinders.",
+      },
+    ],
     typicalTimeline: "2 – 4 Weeks",
     image: "/portfolio/project-10.jpg",
+    unitName: "Custom Door Assemblies",
+    defaultUnitCount: 6,
+    baseRatePerUnit: 45000,
+    clientQuote: {
+      text: "Our 2.7m pivot entrance door in Karen is a showpiece. It glides shut with a soft, hydraulic click that feels like a luxury vault. The mahogany wood grain is extraordinary.",
+      client: "Eng. Samuel N.",
+      location: "Karen, Nairobi",
+      year: "2026",
+    },
   },
   {
     id: "renovation",
     number: "07",
     title: "Roofing & Home Renovation",
+    tagline: "Structural Timber Truss Engineering, Shingle Roofing & Turnkey Renovation",
     shortDesc: "Complete re-roofing, timber truss construction, asphalt shingle roofing, and turnkey home improvements.",
     description:
       "Comprehensive structural and aesthetic rejuvenation. From timber roof truss engineering, treated battens, asphalt shingle installation, to wall removal, MEP electrical/plumbing rewiring, and total residential makeover executed with meticulous white-glove supervision.",
-    features: [
-      "Engineered pitch timber roof trusses & treated green battens",
-      "Premium asphalt shingle & stone-coated metal tile roofing",
-      "Fascia board detailing, gutter waterproofing & thermal insulation",
-      "Turnkey structural renovation and interior space remodeling",
+    detailedOverview: [
+      "A successful renovation requires mastering both structural integrity and fine interior finishing under one roof. When remodeling existing residences across Nairobi, homeowners often face the nightmare of coordinating separate carpenters, roofers, plumbers, and plasterers. Aura & Noir eliminates this friction through unified turnkey execution.",
+      "Our roofing division engineers heavy-duty pitch timber trusses using pressure-treated blue/green treated timber, installed with engineered gang-nail plates and hurricane clips. We specialize in premium fiberglass asphalt shingles and stone-coated metal roofing tiles that offer superior rain acoustics and 30+ year lifespan.",
+      "Internally, we undertake structural wall demolitions (installing universal steel beams for open-plan living), full electrical and plumbing modernization, complete bathroom/kitchen overhauls, and whole-house joinery replacements executed with strict site cleanliness and guaranteed handover dates.",
     ],
-    materialsUsed: ["Treated Structural Timber", "Asphalt Shingles", "Green Anti-Fungal Battens", "Fascia Boards"],
+    features: [
+      "Engineered pitch timber roof trusses constructed with pressure-treated structural timber",
+      "Premium architectural asphalt shingle roofing with 30-year manufacturer warranty",
+      "Breathable waterproof underlayment membrane and aluminum valley gutter flashing",
+      "Structural open-plan wall removal with load-bearing universal steel beam (RSJ) support",
+      "Turnkey MEP modernization: rewiring, concealed PEX plumbing, and bathroom remodeling",
+      "Full interior and exterior architectural repainting using premium weatherproof coatings",
+    ],
+    materialsUsed: [
+      "Pressure-Treated Structural Pine & Cypress",
+      "CertainTeed Architectural Asphalt Shingles",
+      "Self-Adhesive SBS Bitumen Waterproof Membrane",
+      "Heavy-Gauge Powder-Coated Gutter Systems",
+      "Universal Steel RSJ Beams (Grade 43A)",
+    ],
+    technicalSpecs: {
+      fasteningProtocol: "Galvanized ring-shank roofing nails and structural hurricane tie brackets.",
+      moistureStandard: "Pressure-impregnated timber resistant to wood rot, termites, and fungal decay.",
+      loadTolerance: "Truss design engineered to withstand 120 km/h wind gusts and heavy tile dead load.",
+      finishingChemistry: "Class-A fire-resistant fiberglass asphalt shingles with algae-resistant granules.",
+      acousticRating: "Fiberglass shingle multi-layer build cuts rainfall noise by up to 28dB compared to metal sheets.",
+      maintenanceLife: "30+ years roofing lifespan; 10-year turnkey workmanship warranty.",
+    },
+    workflowSteps: [
+      {
+        step: "01",
+        title: "Structural Condition Survey & Architectural Redesign",
+        duration: "Days 1 – 7",
+        description: "Structural engineering inspection of existing roof rafters, load-bearing walls, plumbing integrity, and drafting new architectural open-plan layouts.",
+        deliverables: ["Structural dilapidation report", "Architectural permit plans", "Itemized BoQ and timeline schedule"],
+      },
+      {
+        step: "02",
+        title: "Demolition, Timber Truss Fabrication & Weatherproofing",
+        duration: "Days 8 – 20",
+        description: "Careful demolition of damaged roofing or interior walls, erecting treated pitch timber trusses, and laying waterproof breathable membranes.",
+        deliverables: ["Truss bracing inspection", "Temporary weather tarp protection check", "RSJ steel beam anchor verification"],
+      },
+      {
+        step: "03",
+        title: "Roof Shingle Installation & MEP Rough-In",
+        duration: "Days 21 – 35",
+        description: "Laying architectural shingles with hurricane nail patterns, installing valley flashing, and running new PEX water lines and electrical conduits.",
+        deliverables: ["Roof water-tightness test", "Plumbing pressure test log", "Electrical conduit sign-off"],
+      },
+      {
+        step: "04",
+        title: "Gypsum, Joinery, Tiling & Micro-Finishes",
+        duration: "Days 36 – 55",
+        description: "Installing sculptural gypsum ceilings, fitting bespoke kitchen cabinets, laying hardwood parquet or luxury porcelain tiles, and fitting doors.",
+        deliverables: ["Tiling flatness check", "Cabinet alignment inspection", "Wall plaster level 5 finish sign-off"],
+      },
+      {
+        step: "05",
+        title: "Deep Cleaning, Commissioning & White-Glove Handover",
+        duration: "Days 56 – 70",
+        description: "Snag-free deep cleaning, testing all electrical circuits and plumbing fixtures, final paint touchups, and handing over the keys.",
+        deliverables: ["Comprehensive snag clearance report", "10-Year Turnkey Warranty Dossier", "Turnkey keys handover"],
+      },
+    ],
+    faqs: [
+      {
+        question: "Can we continue living in the house while you re-roof or remodel the home?",
+        answer: "Yes, for many projects. We execute re-roofing in staged, weatherproof sections with heavy temporary tarpaulins deployed each evening to prevent any rain ingress. For interior remodeling, we install floor-to-ceiling zip-wall dust barriers to isolate living quarters from work zones.",
+      },
+      {
+        question: "How do asphalt shingles compare to ordinary corrugated iron sheets or clay tiles?",
+        answer: "Asphalt shingles are significantly superior: 1) They eliminate the loud deafening drumming of rain common with iron sheets; 2) They do not rust or fade; 3) Unlike brittle clay tiles, they do not crack during roof maintenance or hail; and 4) They carry a 30-year manufacturer warranty.",
+      },
+      {
+        question: "Can you safely knock down interior walls to create an open-plan living and kitchen layout?",
+        answer: "Yes. Our structural engineer inspects the wall to determine if it is load-bearing. If load-bearing, we support the ceiling with temporary Acrow props and install an engineered universal steel beam (RSJ) seated on reinforced concrete padstones before removing the wall.",
+      },
+      {
+        question: "How do you control budget overruns during unexpected renovation snags?",
+        answer: "Before starting, we perform exploratory openings of ceiling and plumbing voids to uncover hidden conditions. Our Quotation is fully itemized with fixed unit rates, and no change order is ever commenced without your prior written approval.",
+      },
+      {
+        question: "What warranties do you provide on roofing and structural renovations?",
+        answer: "We provide an ironclad 10-year craftsmanship warranty on all structural timber framing and roofing installation, alongside the manufacturer's 30-year limited warranty on architectural shingles.",
+      },
+    ],
     typicalTimeline: "4 – 12 Weeks",
     image: "/portfolio/project-54.jpg",
+    unitName: "Square Meters of Renovation (m²)",
+    defaultUnitCount: 150,
+    baseRatePerUnit: 12000,
+    clientQuote: {
+      text: "Aura & Noir completely rebuilt our 30-year-old Karen residence from the roof trusses down to the hardwood floors. The project finished right on schedule, and the transformation is staggering.",
+      client: "Patrick & Evelyn M.",
+      location: "Karen Ridge, Nairobi",
+      year: "2026",
+    },
   },
 ];
 
