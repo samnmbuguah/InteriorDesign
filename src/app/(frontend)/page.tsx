@@ -200,7 +200,7 @@ export default function HomePage() {
                 href="/services"
                 className="px-7 py-3.5 rounded-full bg-stone-900 text-white dark:bg-gradient-to-r dark:from-amber-500 dark:via-amber-400 dark:to-amber-500 dark:text-stone-950 font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl shadow-amber-500/10 hover:brightness-105 transition"
               >
-                <span>Explore 7 Core Disciplines</span>
+                <span>Explore What We Do</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
@@ -326,7 +326,7 @@ export default function HomePage() {
                       href={`/services/${currentHero.serviceId}`}
                       className="text-amber-300 hover:underline flex items-center gap-1 uppercase tracking-wider font-sans font-semibold text-[10px]"
                     >
-                      <span>Explore Discipline</span>
+                      <span>Explore Service</span>
                       <ArrowRight className="w-3 h-3" />
                     </Link>
                   </div>
@@ -369,7 +369,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. THE 7 SPECIALIZED DISCIPLINES (EACH WITH ITS OWN PAGE!) */}
+      {/* 2. WHAT WE DO (7 CORE SERVICES, EACH WITH ITS OWN PAGE!) */}
       <section className="py-20 px-6 md:px-12 max-w-7xl mx-auto border-t border-stone-200 dark:border-stone-800/80">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div>
@@ -378,10 +378,10 @@ export default function HomePage() {
               Turnkey Fabrication & In-House Joinery
             </div>
             <h2 className="font-serif text-3xl md:text-5xl text-stone-900 dark:text-stone-100 font-normal leading-tight">
-              Our 7 Core Master Disciplines
+              What We Do · 7 Core Services
             </h2>
             <p className="text-sm text-stone-600 dark:text-stone-400 mt-2 max-w-xl font-sans">
-              Every discipline is executed by our dedicated master joiners and plaster artisans. Select any craft to inspect the dedicated dossier, materials, and price estimator.
+              Every service is executed by our dedicated master joiners and plaster artisans. Select any craft to inspect the dedicated dossier, materials, and price estimator.
             </p>
           </div>
 
@@ -409,7 +409,7 @@ export default function HomePage() {
                     className="w-full h-full object-cover transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full backdrop-blur-md bg-stone-950/75 text-[10px] font-mono text-amber-300">
-                    Discipline {s.number}
+                    Service {s.number}
                   </div>
                   <div className="absolute bottom-2.5 right-2.5 p-2 rounded-full backdrop-blur-md bg-stone-950/75 text-white opacity-0 group-hover:opacity-100 transition-opacity">
                     <ArrowUpRight className="w-3.5 h-3.5 text-amber-400" />

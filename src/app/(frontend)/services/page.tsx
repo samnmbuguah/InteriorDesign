@@ -37,18 +37,18 @@ export default function ServicesPage() {
           <div className="lg:col-span-6 space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs tracking-widest uppercase font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Specialized Joinery & Finishing Disciplines</span>
+              <span>What We Do · Joinery & Interior Finishing</span>
             </div>
 
             <h1 className="font-serif text-4xl sm:text-6xl text-stone-900 dark:text-stone-100 font-normal leading-[1.1]">
-              7 In-House Disciplines,{" "}
+              What We Do,{" "}
               <span className="italic font-light text-amber-700 dark:text-amber-300">
                 Endless Masterpieces
               </span>
             </h1>
 
             <p className="text-sm sm:text-base text-stone-600 dark:text-stone-300 font-sans leading-relaxed max-w-xl font-light">
-              Each discipline operates with dedicated master carpenters, precision CNC routers, and flawless hand finishing. Explore our dedicated dossiers with real installations across Karen, Runda, Muthaiga, and Kitisuru.
+              Every service is executed with dedicated master carpenters, precision CNC routers, and flawless hand finishing. Explore our dedicated dossiers with real installations across Karen, Runda, Muthaiga, and Kitisuru.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">

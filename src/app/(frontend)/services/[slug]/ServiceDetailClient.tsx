@@ -129,7 +129,7 @@ export default function ServiceDetailClient({
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs tracking-widest uppercase font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>
-                Discipline {service.number} of 07 · In-House Workshop Craft
+                What We Do · Service {service.number} of 07
               </span>
             </div>
 
@@ -209,7 +209,7 @@ export default function ServiceDetailClient({
                 {/* Floating Discipline Badge */}
                 <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full backdrop-blur-md bg-stone-950/80 border border-white/10 text-[11px] font-mono text-amber-300 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Workshop Discipline {service.number}</span>
+                  <span>What We Do · Service {service.number}</span>
                 </div>
 
                 {/* Bottom Overlay Info */}
@@ -438,7 +438,7 @@ export default function ServiceDetailClient({
                     Precision Pre-Drill & High-Torque Screw Rig
                   </h4>
                   <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-sans leading-relaxed mt-2">
-                    We discard nails and soft slotted screws. Every structural joint in this discipline is secured with calibrated brushless 18V drivers, carbide-tipped stepped pilot bits, and corrosion-resistant Torx architectural screws that eliminate squeaks, drift, and structural loosening.
+                    We discard nails and soft slotted screws. Every structural joint in our fabrication is secured with calibrated brushless 18V drivers, carbide-tipped stepped pilot bits, and corrosion-resistant Torx architectural screws that eliminate squeaks, drift, and structural loosening.
                   </p>
                 </div>
 
@@ -912,7 +912,7 @@ export default function ServiceDetailClient({
               Integrated Architectural Craft
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl text-stone-900 dark:text-stone-100 font-normal">
-              Explore Our Other 6 Workshop Disciplines
+              Explore More of What We Do
             </h2>
           </div>
           <Link

@@ -49,7 +49,7 @@ export const Inquiries: CollectionConfig = {
         {
           name: 'projectType',
           type: 'text',
-          label: 'Requested Service / Discipline',
+          label: 'Requested Service / What We Do',
         },
         {
           name: 'location',

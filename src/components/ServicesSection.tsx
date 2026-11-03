@@ -42,7 +42,7 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
 
         <div className="flex items-center gap-2 text-xs text-stone-500 font-mono">
           <span className="w-2 h-2 rounded-full bg-amber-500" />
-          <span>7 In-House Workshop Disciplines</span>
+          <span>What We Do · 7 Core Services</span>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export default function ServicesSection({ onSelectService }: ServicesSectionProp
           <div className="lg:col-span-7 space-y-6">
             <div>
               <span className="text-[10px] uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold block mb-1">
-                Precision Workshop Discipline
+                What We Do · Specialized Service
               </span>
               <h3 className="font-serif text-2xl sm:text-4xl text-stone-900 dark:text-stone-100 leading-tight">
                 {currentService.title}

@@ -227,7 +227,7 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
                         <div>
                           <span className="text-[10px] uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1.5">
                             <Wrench className="w-3 h-3" />
-                            7 In-House Workshop Disciplines
+                            What We Do · 7 Core Services
                           </span>
                           <h4 className="font-serif text-base text-stone-900 dark:text-stone-100 font-normal">
                             Dedicated Architectural Pages & Dossiers
@@ -238,7 +238,7 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
                           onClick={() => setServicesDropdownOpen(false)}
                           className="text-[11px] font-semibold text-amber-700 dark:text-amber-300 hover:underline flex items-center gap-1 uppercase tracking-wider"
                         >
-                          <span>All 7 Disciplines Overview</span>
+                          <span>What We Do Overview</span>
                           <ArrowRight className="w-3 h-3" />
                         </Link>
                       </div>
@@ -545,7 +545,7 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
                     <div className="flex items-center gap-2">
                       <Wrench className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                       <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 uppercase tracking-wider">
-                        7 Workshop Disciplines
+                        What We Do · 7 Core Services
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5 text-[10px] text-amber-700 dark:text-amber-400 font-mono font-medium">
@@ -568,12 +568,12 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
                       >
                         <span className="flex items-center gap-1.5">
                           <Wrench className="w-3.5 h-3.5" />
-                          <span>All Disciplines Overview</span>
+                          <span>What We Do Overview</span>
                         </span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
 
-                      {/* 7 Dedicated Discipline Pages */}
+                      {/* 7 Dedicated Service Pages */}
                       {MAIN_SERVICES.map((srv) => (
                         <Link
                           key={srv.id}
