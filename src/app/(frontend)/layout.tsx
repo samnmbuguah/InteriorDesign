@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { BookingProvider } from "@/context/BookingContext";
-import "./globals.css";
+import "@/app/globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://interiordesign.akilinova.co.ke"),

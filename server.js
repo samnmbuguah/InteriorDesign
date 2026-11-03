@@ -1,8 +1,20 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Ensure working directory is the application root (cPanel Passenger defaults cwd to /home/treepass)
+process.chdir(__dirname)
+process.env.ROOT_DIR = __dirname
+process.env.DATABASE_URI = process.env.DATABASE_URI || `file:${path.resolve(__dirname, 'data/payload.db')}`
+process.env.PAYLOAD_SECRET = process.env.PAYLOAD_SECRET || 'austine-interior-atelier-payload-secret-key-2026'
+
 import { createServer } from 'http'
 import next from 'next'
 
-const dev = process.env.NODE_ENV !== 'production'
-const hostname = 'localhost'
+const dev = false
+const hostname = '0.0.0.0'
 const port = process.env.PORT || 3000
 
 const app = next({ dev, hostname, port })
@@ -23,6 +35,6 @@ app.prepare().then(() => {
       process.exit(1)
     })
     .listen(port, () => {
-      console.log(`> Ready on http://${hostname}:${port}`)
+      console.log(`> Ready on port ${port} in ${__dirname}`)
     })
 })

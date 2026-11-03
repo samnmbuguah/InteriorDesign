@@ -51,6 +51,29 @@ export async function POST(request: Request) {
       console.warn("[AURA & NOIR] Notice: could not write local leads file:", fsErr);
     }
 
+    // 1b. Persist inquiry into Payload CMS collection
+    try {
+      const { getPayload } = await import("payload");
+      const payloadConfig = (await import("@payload-config")).default;
+      const payloadClient = await getPayload({ config: payloadConfig });
+      await payloadClient.create({
+        collection: "inquiries",
+        data: {
+          reservationId,
+          clientName: name,
+          clientPhone: phone,
+          clientEmail: email,
+          location: location || "Nairobi",
+          projectType: projectType || "General Consultation",
+          budget: budget || "Not specified",
+          notes: notes || "",
+          status: "NEW_LEAD",
+        },
+      });
+    } catch (payloadErr) {
+      console.warn("[AURA & NOIR] Notice: Payload CMS lead persistence:", payloadErr);
+    }
+
     // 2. Dispatch to Strapi CMS (asynchronously with non-blocking error handling)
     try {
       submitStrapiInquiry({
