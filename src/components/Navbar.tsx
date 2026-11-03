@@ -170,11 +170,11 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
             }`}
           >
             {/* Atelier Brand Emblem with Precision Drill & Screw Motif */}
-            <Link href="/" className="group flex items-center gap-2.5 shrink-0" title="AURA & NOIR Atelier">
+            <Link href="/" className="group flex items-center gap-2.5 shrink-0" title="ELITE INTERIORS Atelier">
               <AtelierLogo size="md" showText={false} />
               <div className="flex flex-col">
                 <span className="font-serif text-sm md:text-base tracking-[0.2em] font-medium text-stone-900 dark:text-stone-100 uppercase group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
-                  AURA & NOIR
+                  ELITE INTERIORS
                 </span>
                 <span className="hidden xl:block text-[8px] uppercase tracking-[0.26em] text-stone-500 dark:text-stone-400 font-sans">
                   Precision Joinery & Craft
@@ -471,7 +471,7 @@ export default function Navbar({ onOpenBooking, onOpenLookbook }: NavbarProps) {
                   <AtelierLogo size="sm" showText={false} />
                   <div>
                     <span className="font-serif text-sm tracking-[0.2em] font-medium block">
-                      AURA & NOIR
+                      ELITE INTERIORS
                     </span>
                     <span className="text-[8px] uppercase tracking-[0.25em] text-stone-500 block">
                       Precision Workshop Atelier

@@ -4,8 +4,8 @@ import { BookingProvider } from "@/context/BookingContext";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://interiordesign.akilinova.co.ke"),
-  title: "AURA & NOIR | Master Joinery, Gypsum & Home Renovation Atelier",
+  metadataBase: new URL("https://eliteinteriors.co.ke"),
+  title: "ELITE INTERIORS | Master Joinery, Gypsum & Home Renovation Atelier",
   description:
     "Specialists in wooden staircases, gypsum ceiling design & installation, wooden flooring, custom kitchen cabinets & wardrobes, TV media walls, door & frame fitting, and roofing & full home renovations in Nairobi.",
   keywords: [
@@ -16,21 +16,21 @@ export const metadata: Metadata = {
     "custom TV stands Kenya",
     "door and frame fitting Nairobi",
     "roofing and home renovation Kenya",
-    "AURA & NOIR Atelier",
+    "ELITE INTERIORS Atelier",
   ],
-  authors: [{ name: "AURA & NOIR Atelier" }],
+  authors: [{ name: "ELITE INTERIORS Atelier" }],
   openGraph: {
-    title: "AURA & NOIR | Master Joinery, Gypsum & Home Renovation",
+    title: "ELITE INTERIORS | Master Joinery, Gypsum & Home Renovation",
     description:
       "Specialists in wooden staircases, gypsum ceiling designs, hardwood flooring, kitchen cabinets, TV stands, door fitting, and turnkey renovations.",
-    url: "https://interiordesign.akilinova.co.ke",
-    siteName: "AURA & NOIR Atelier",
+    url: "https://eliteinteriors.co.ke",
+    siteName: "ELITE INTERIORS Atelier",
     images: [
       {
         url: "/portfolio/project-31.jpg",
         width: 1200,
         height: 800,
-        alt: "AURA & NOIR Craftsmanship",
+        alt: "ELITE INTERIORS Craftsmanship",
       },
     ],
     locale: "en_US",
@@ -49,10 +49,10 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "HomeAndConstructionBusiness",
-  "name": "AURA & NOIR Atelier",
-  "image": "https://interiordesign.akilinova.co.ke/portfolio/project-31.jpg",
-  "@id": "https://interiordesign.akilinova.co.ke",
-  "url": "https://interiordesign.akilinova.co.ke",
+  "name": "ELITE INTERIORS Atelier",
+  "image": "https://eliteinteriors.co.ke/portfolio/project-31.jpg",
+  "@id": "https://eliteinteriors.co.ke",
+  "url": "https://eliteinteriors.co.ke",
   "telephone": "+254728541775",
   "priceRange": "$$$$",
   "address": {

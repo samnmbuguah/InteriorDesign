@@ -175,7 +175,7 @@ export default function ServiceDetailClient({
 
               <a
                 href={`${CONTACT_INFO.whatsappLink}?text=${encodeURIComponent(
-                  `Hello AURA & NOIR, I would like to inquire about your ${service.title} service and schedule an on-site survey.`
+                  `Hello Elite Interiors, I would like to inquire about your ${service.title} service and schedule an on-site survey.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

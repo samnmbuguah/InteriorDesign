@@ -838,7 +838,7 @@ export const CONTACT_INFO = {
   phoneInternational: "+254 728 541 775",
   telLink: "tel:+254728541775",
   whatsappLink: "https://wa.me/254728541775",
-  email: "quotes@interiordesign.akilinova.co.ke",
+  email: "quotes@eliteinteriors.co.ke",
   address: "The Pavilion, Riverside Drive, Westlands, Nairobi, Kenya",
 };
 

@@ -20,15 +20,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!service) {
     return {
-      title: "Service Not Found | AURA & NOIR",
+      title: "Service Not Found | ELITE INTERIORS",
     };
   }
 
   return {
-    title: `${service.title} | AURA & NOIR Architectural Atelier`,
+    title: `${service.title} | ELITE INTERIORS Architectural Atelier`,
     description: service.shortDesc,
     openGraph: {
-      title: `${service.title} | AURA & NOIR Atelier Nairobi`,
+      title: `${service.title} | ELITE INTERIORS Atelier Nairobi`,
       description: service.description,
       images: [
         {

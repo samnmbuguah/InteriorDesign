@@ -250,7 +250,7 @@ export default function ProjectGallery({
           {filteredProjects.map((project) => {
             const isPinned = pinnedIds.includes(project.id);
             const whatsappText = encodeURIComponent(
-              `Hello AURA & NOIR, I would like to inquire about Project #${project.number}: ${project.title} (${project.categoryLabel}). Can you provide a quotation?`
+              `Hello Elite Interiors, I would like to inquire about Project #${project.number}: ${project.title} (${project.categoryLabel}). Can you provide a quotation?`
             );
 
             return (
@@ -366,7 +366,7 @@ export default function ProjectGallery({
           {filteredProjects.map((project) => {
             const isPinned = pinnedIds.includes(project.id);
             const whatsappText = encodeURIComponent(
-              `Hello AURA & NOIR, I would like to inquire about Project #${project.number}: ${project.title} (${project.categoryLabel}). Can you provide a quotation?`
+              `Hello Elite Interiors, I would like to inquire about Project #${project.number}: ${project.title} (${project.categoryLabel}). Can you provide a quotation?`
             );
 
             return (

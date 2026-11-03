@@ -146,7 +146,7 @@ export default function AtelierLogo({
       {showText && (
         <div className="flex flex-col">
           <span className="font-serif text-base tracking-[0.2em] font-medium text-stone-900 dark:text-stone-100 uppercase group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
-            AURA & NOIR
+            ELITE INTERIORS
           </span>
           <span className="text-[8px] uppercase tracking-[0.26em] text-stone-500 dark:text-stone-400 font-sans">
             Joinery · Gypsum · Precision Craft

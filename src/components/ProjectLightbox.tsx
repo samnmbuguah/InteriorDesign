@@ -89,7 +89,7 @@ export default function ProjectLightbox({
   };
 
   const whatsappText = encodeURIComponent(
-    `Hello AURA & NOIR, I am inquiring about Project #${project.number}: "${project.title}" (${project.categoryLabel}) located in ${project.location}. Can you provide an estimate and discuss site survey?`
+    `Hello Elite Interiors, I am inquiring about Project #${project.number}: "${project.title}" (${project.categoryLabel}) located in ${project.location}. Can you provide an estimate and discuss site survey?`
   );
 
   const getCraftBadgeColor = (stage: string) => {

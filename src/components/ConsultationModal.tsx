@@ -115,7 +115,7 @@ export default function ConsultationModal({
 
   const openWhatsApp = () => {
     const text = encodeURIComponent(
-      `Hello AURA & NOIR, I would like to request a quotation for ${formData.projectType} in ${formData.location}. (Ref: ${reservationId}).`
+      `Hello Elite Interiors, I would like to request a quotation for ${formData.projectType} in ${formData.location}. (Ref: ${reservationId}).`
     );
     window.open(`https://wa.me/254728541775?text=${text}`, "_blank");
   };

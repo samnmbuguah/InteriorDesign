@@ -19,7 +19,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-3 group">
               <AtelierLogo size="md" showText={false} />
               <span className="font-serif text-xl tracking-[0.2em] font-medium text-stone-100 uppercase group-hover:text-amber-300 transition-colors">
-                AURA & NOIR
+                ELITE INTERIORS
               </span>
             </Link>
 
@@ -120,8 +120,8 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <a href="mailto:quotes@interiordesign.akilinova.co.ke" className="hover:text-amber-300 transition">
-                  quotes@interiordesign.akilinova.co.ke
+                <a href="mailto:quotes@eliteinteriors.co.ke" className="hover:text-amber-300 transition">
+                  quotes@eliteinteriors.co.ke
                 </a>
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-stone-400 font-sans">
-          <p>© 2026 AURA & NOIR Atelier. All rights reserved. Subdomain: interiordesign.akilinova.co.ke</p>
+          <p>© 2026 ELITE INTERIORS Atelier. All rights reserved. Domain: eliteinteriors.co.ke</p>
 
           <button
             onClick={scrollToTop}

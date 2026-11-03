@@ -54,7 +54,7 @@ export default function EstimatorPage() {
 
               <a
                 href={`${CONTACT_INFO.whatsappLink}?text=${encodeURIComponent(
-                  "Hello AURA & NOIR Atelier, I am reviewing the Cost Estimator and would like to schedule a site survey."
+                  "Hello Elite Interiors Atelier, I am reviewing the Cost Estimator and would like to schedule a site survey."
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

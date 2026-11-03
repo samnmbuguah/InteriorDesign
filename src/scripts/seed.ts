@@ -13,7 +13,7 @@ async function seed() {
     collection: 'users',
     where: {
       email: {
-        equals: 'admin@interiordesign.akilinova.co.ke',
+        equals: 'admin@eliteinteriors.co.ke',
       },
     },
     limit: 1,
@@ -25,12 +25,12 @@ async function seed() {
       collection: 'users',
       data: {
         name: 'Austine Administrator',
-        email: 'admin@interiordesign.akilinova.co.ke',
+        email: 'admin@eliteinteriors.co.ke',
         password: 'AustineDesigns2026!',
         role: 'admin',
       },
     })
-    console.log('[Payload Seed] Admin user created: admin@interiordesign.akilinova.co.ke')
+    console.log('[Payload Seed] Admin user created: admin@eliteinteriors.co.ke')
   } else {
     console.log('[Payload Seed] Admin user already exists.')
   }
@@ -91,7 +91,7 @@ async function seed() {
               reservationId: lead.reservationId,
               clientName: lead.client?.name || 'Prospective Client',
               clientPhone: lead.client?.phone || '0728 541 775',
-              clientEmail: lead.client?.email || 'quotes@interiordesign.akilinova.co.ke',
+              clientEmail: lead.client?.email || 'quotes@eliteinteriors.co.ke',
               location: lead.project?.location || 'Nairobi',
               projectType: lead.project?.projectType || 'General Consultation',
               budget: lead.project?.budget || 'Not specified',

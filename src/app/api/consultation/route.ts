@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       status: "CONFIRMED_AUDIT",
     };
 
-    console.log("[AURA & NOIR] New Consultation Dossier:", JSON.stringify(dossier, null, 2));
+    console.log("[ELITE INTERIORS] New Consultation Dossier:", JSON.stringify(dossier, null, 2));
 
     // 1. Persist dossier to local storage so leads are permanently recorded
     try {
@@ -88,13 +88,13 @@ export async function POST(request: Request) {
       }).catch((e) => console.warn("[AURA & NOIR] Strapi inquiry dispatch notice:", e));
     } catch (_) {}
 
-    // 3. Dispatch email notification via system sendmail to quotes@interiordesign.akilinova.co.ke
+    // 3. Dispatch email notification via system sendmail to quotes@eliteinteriors.co.ke
     try {
-      const recipient = "quotes@interiordesign.akilinova.co.ke";
+      const recipient = "quotes@eliteinteriors.co.ke";
       const subject = `[New Quote Request] ${projectType || "Interior Design"} - ${name} (${reservationId})`;
       
       const emailContent = `To: ${recipient}
-From: AURA & NOIR Atelier <quotes@interiordesign.akilinova.co.ke>
+From: ELITE INTERIORS Atelier <quotes@eliteinteriors.co.ke>
 Reply-To: ${name} <${email}>
 Subject: ${subject}
 MIME-Version: 1.0
@@ -121,7 +121,7 @@ Content-Type: text/html; charset=utf-8
 <body>
   <div class="container">
     <div class="header">
-      <h1 class="title">AURA & NOIR</h1>
+      <h1 class="title">ELITE INTERIORS</h1>
       <div class="subtitle">Bespoke Architectural Interior Design Atelier</div>
     </div>
     <div class="body-content">
@@ -159,7 +159,7 @@ Content-Type: text/html; charset=utf-8
       </div>
     </div>
     <div class="footer">
-      Delivered by AURA & NOIR Atelier Web Platform · Subdomain: interiordesign.akilinova.co.ke
+      Delivered by ELITE INTERIORS Atelier Web Platform · Domain: eliteinteriors.co.ke
     </div>
   </div>
 </body>
