@@ -203,14 +203,7 @@ export interface Project {
   id: number;
   title: string;
   slug?: string | null;
-  category:
-    | 'wooden-staircase'
-    | 'gypsum-designing'
-    | 'wooden-flooring'
-    | 'kitchen-wardrobes'
-    | 'tv-stands'
-    | 'doors-frames'
-    | 'roofing-renovations';
+  category: 'staircases' | 'gypsum' | 'flooring' | 'cabinetry' | 'tv_stands' | 'doors' | 'renovation';
   craftStage?: ('Completed Work' | 'On-Site Installation' | 'Workshop Milling') | null;
   location?: string | null;
   year?: string | null;
