@@ -43,12 +43,14 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      required: true,
-      defaultValue: 'Austine Interior Design Project Asset',
+      required: false,
+      defaultValue: 'Elite Interiors Architectural Asset',
+      label: 'Image Description (Alt Text)',
     },
     {
       name: 'caption',
       type: 'text',
+      label: 'Caption (Optional)',
     },
   ],
 }

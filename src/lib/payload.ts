@@ -13,6 +13,7 @@ export async function getPayloadProjects(): Promise<Project[]> {
       collection: 'projects',
       sort: 'displayOrder',
       limit: 100,
+      depth: 2,
     })
 
     if (res.docs && res.docs.length > 0) {
@@ -32,7 +33,7 @@ export async function getPayloadProjects(): Promise<Project[]> {
           subtitle: `${doc.location || 'Nairobi'} · ${doc.craftStage || 'Completed Work'}`,
           category: cat,
           categoryLabel: catObj ? catObj.label : 'Joinery & Renovation',
-          image: doc.imageUrl || mediaUrl || '/portfolio/project-01.jpg',
+          image: mediaUrl || doc.imageUrl || '/portfolio/project-01.jpg',
           location: doc.location || 'Nairobi, Kenya',
           year: doc.year || '2026',
           area: 'Custom Commission',

@@ -92,15 +92,21 @@ export const Projects: CollectionConfig = {
       ],
     },
     {
-      name: 'imageUrl',
-      type: 'text',
-      label: 'Primary Image URL (e.g. /portfolio/project-07.jpg or external)',
+      name: 'imageMedia',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Project Photo (Upload New or Choose from Media Library)',
+      admin: {
+        description: 'Recommended: Drag and drop or upload a photo directly here. This image will be automatically optimized and displayed on the website.',
+      },
     },
     {
-      name: 'imageMedia',
-      type: 'relationship',
-      relationTo: 'media',
-      label: 'Uploaded Media Asset (Optional)',
+      name: 'imageUrl',
+      type: 'text',
+      label: 'Legacy Image Path / External URL (Optional)',
+      admin: {
+        description: 'Optional fallback: Used for pre-existing static assets (e.g. /portfolio/project-01.jpg). If you upload a Project Photo above, the uploaded photo will automatically take priority.',
+      },
     },
     {
       name: 'isVideo',
